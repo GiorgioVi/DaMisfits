@@ -1,32 +1,62 @@
-{% extends "template.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Attendance</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{%block title %}
-Login
-{%endblock%}
-{%block content %}
-<div class="row">
-  <div class="col-md-4"></div>
-  <div class="col-md-4 container login">
-    <form method="POST" action="/login">
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      {% for message in messages %}
-      <font color="red">{{ message }}</font><br>
-      {% endfor %}
-      {% endif %}
-      {% endwith %}
-      <div class="form-group">
-        <label for="user">Username</label>
-        <input name="username" type="text" class="form-control" id="user" placeholder="Enter username">
-      </div>
-      <div class="form-group">
-        <label for="pass">Password</label>
-        <input name="password" type="password" class="form-control" id="pass" placeholder="Enter password">
-      </div>
-      <input class="btn btn-info btn-block" type="submit" name="form" value="Login">
-    </form>
-    New user? <a class="text-muted" href="/create">Create an account</a>
+  <!-- bootstrap !-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="narrow-jumbotron.css" rel="stylesheet">
+
+  <!-- flash messages !-->
+  {% set messages = get_flashed_messages() %}
+  {% for message in messages %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
-  <div class="col-md-4"></div>
+  <h3 style="text-align:center;color:red;" class="text-muted" > {{message}} </h3>
+  {% endfor %}
+</head>
+<body style="background-color: lightblue">
+
+
+<div class="header">
+  <br>
 </div>
-{% endblock %}
+
+
+<div class="container">
+  <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
+    <h1><center>Attendance Tracker</center></h1>
+  <p class="text-muted text-center">Get to Class!</p>
+
+  <center>
+  <h2>Login</h2> <br>
+  <form method = "POST" action ="/authenticate">
+
+  Enter your username:<br>
+  <input type="text" name="username" required><br><br>
+
+  Enter your password: <br>
+  <input type="password" name="password" required><br><br>
+
+  <button class="btn btn-default" type="submit" value="submit">Login</button>
+  <br> <br>
+      </form>
+
+  <form method = "GET" action = "/register">
+  Don't have an account?
+  <button class="btn btn-default" type="submit" value="Register">Register</button>
+  </form>
+</center>
+  </div>
+</div>
+
+  <br><br>
+<div class="row">
+</div>
+</body>
+</html>
