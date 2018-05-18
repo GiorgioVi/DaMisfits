@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>
+    {% block title %}
+    {% endblock %}
+  </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="stylesheet" type="text/css" href="static/bootstrap.min.css">
+  <link type="text/css" href="static/style.css" rel="stylesheet">
+</head>
+<body>
+
+
+  <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <ul class="navbar-nav mr-auto">
+
+      <li class="nav-item navbar-center">
+        <a class="" href="/"><img src="static/logo.png" alt="logo"></a>
+      </li>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/profile">Profile</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/search">Search</a>
+      </li>
+    
+  </div>
+  </ul>
+
+  {% if isLogged %}
+  <li class="nav-item navbar-right active">
+    <a class="btn nav-link-success btn-outline-danger" href="/logout">Logout</a>
+  </li>
+
+    {% else %} 
+
+    <li class="nav-item navbar-right active">
+      <a class="btn nav-link-success btn-outline-info " href="/login">Login</a>
+    </li>
+    {% endif %}
+  </nav>
+  <br><br>
+  <center>
+    <div class="content">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </center>
+
+  <style>
+  .footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #1C2C3D;
+    color: white;
+    text-align: center;
+  }
+</style>
+
+<div class="footer">
+  <p class="footerhdr">
+    MONOTUNES <br>
+    James Smith, Adeeb Rahman, Kevin Li, and Michael Cheng<br>
+    Softdev Project 1<br>
+    Uses Musixmatch and IBM Watson Text to Speech APIS<br>
+  </p>
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+{% extends "template.html" %}
+{% block title %}
+Search
+{% endblock %}
+
+{%block content %}
+<div class="container">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-10 searchbar">
+      <form class="form-song" action="/song" method="GET">
+       <div class="form-group">
+        <label for="user"><h2>Search for song</h2></label>
+        <div class="form-stuff">
+        <input class="form-control mr-sm-2" type="text" name="title" placeholder="Song name">
+        <input class="form-control mr-sm-2" type="text" name="artist" placeholder="Artist name">
+        <br>
+        <button class="btn btn-outline-info btn-info my-2 my-sm-0" type="submit">Search</button>
+      </div>
+      </div>
+    </form>
+    <br>
+
+    <form class="form-artist" action="/artist" method="GET">
+       <div class="form-group">
+        <label for="user"><h2>Search for artist</h2></label>
+        <div class="form-stuff">
+          <input class="form-control mr-sm-2" type="text" name="artist" placeholder="Artist name">
+          <br>
+          <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+        </div>
+        </div>
+    </form>
+  </div>
+  <div class="col"></div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "template.html" %}
+{%block title %}
+{{artist}}'s Page
+{% endblock %}
+{%block content %}
+<h1>{{artist}}'s Page</h1><br><br>
+{% if album_dict|length == 0 %}
+{{artist}} has no albums. Sorry.
+{% else %}
+<div class="container album-table">
+  <div class="row no-gutters">
+    <div class="col text-center text-success">
+        <h2>Album Name</h2>
+    </div>
+    <div class="col-2"></div>
+    <div class="col text-success">
+        <h2>Tracklist</h2>
+    </div>
+  </div><br>
+  <ul>
+    {% for each in album_dict%}
+    <div class="row row-border align-items-center">
+      <div class="col text-center">
+        <h4 class="album-name">{{each}}</h4>
+      </div>
+      <div class="col-2"></div>
+      <div class="col lyrics">
+        {% for t in album_dict[each] %}
+        <li class="song-name"><a href="/song?title={{t["track"]["track_name"]}}&artist={{t["track"]["artist_name"]}}">{{t["track"]["track_name"]}}</a></li>
+        {% endfor %}
+      </div>
+    </div>
+    {%endfor%}
+  </ul>
+</div>
+
+{% endif %}
+{%endblock%}

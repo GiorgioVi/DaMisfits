@@ -1,0 +1,33 @@
+{% extends "template.html" %}
+{% block title %}
+{{title}} by {{artist}}
+{% endblock %}
+
+{%block content %}
+<div class="songinfo">
+  <h1>
+    {{title}}
+    <br>
+    <small class="text-muted">{{artist}}</small>
+  </h1>
+  <audio controls>
+    <source src={{url}} type="audio/wav">
+    Your browser does not support the audio tag.
+  </audio>
+  <p class="lyrics">{{lyrics}}</p>
+</div>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<font color="red">{{ message }}</font><br>
+{% endfor %}
+{% endif %}
+{% endwith %}
+<form action="/song" method="post">
+  <input type="hidden" name="favorite" value="{{id}}">
+  <input type="hidden" name="id" value="{{id}}">
+  <input type="hidden" name="title" value="{{title}}">
+  <input type="hidden" name="artist" value="{{artist}}">
+  <input class="btn btn-info" type="submit" name="form" value="Favorite">
+</form>
+{% endblock %}

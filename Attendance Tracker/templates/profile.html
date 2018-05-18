@@ -1,0 +1,25 @@
+{% extends "template.html" %}
+{%block title %}{{username}}'s Profile{% endblock %}
+{%block content %}
+<h1>{{username}}'s profile</h1>
+<br>
+<h2> Favorites </h2>
+<div class="container-fluid">
+  {% for each in favorites_dict %}
+  <div class="row">
+  <div class="col-md musiclist">
+  
+    <a href="/song?title={{each}}&artist={{favorites_dict[each][0]}}">{{each}}</a> by <a href="/artist?artist={{favorites_dict[each][0]}}">{{favorites_dict[each][0]}}</a>
+  </div>
+  <div class="col-md-3">
+    <form action="/profile" method="post">
+      <input type="hidden" name="songID" value="{{favorites_dict[each][1]}}">
+      <input class="btn btn-sm btn-primary" type="submit" name="form" value="Remove">
+    </form>
+
+  </div>
+</div>
+  {%endfor%}
+</div>
+
+{%endblock%}  

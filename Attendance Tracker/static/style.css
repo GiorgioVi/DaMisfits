@@ -1,0 +1,63 @@
+body {
+  padding-top: 10px;
+  min-height: 75rem;
+}
+.login{
+  background-color: #DCEAED;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.content{
+	text-align: left;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+.lyrics.musiclist {
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #DCEAED;
+}
+
+.form-stuff{
+  background-color: #DCEAED;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.footerhdr{
+  font-size: 10px;
+}
+
+h1{
+  color: #FF545C;
+}
+
+.navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+}
+
+a{
+  color: #FF545C;
+}
+/* navbar */
+.navbar-default .navbar{
+    background-color: ##1C2C3D;
+    border-color: #E7E7E7;
+}
+/* Title */
+.navbar-default .navbar-brand {
+    color: ##1C2C3D;
+}
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+    color: #5E5E5E;
+}
+
+.row-border{
+	border-top: 3px solid #afb8c6;
+}

@@ -1,0 +1,13 @@
+{% extends "template.html" %}
+{%block title %}Home{% endblock %}
+{%block content %}
+<ul>
+  <h1>Welcome to Monotunes!</h1>
+<h2>Top 10 Now</h2>
+<div class="lyrics">
+{% for each in top_songs%}
+  <a href="/song?title={{each["track"]["track_name"]}}&artist={{each["track"]["artist_name"]}}">{{each["track"]["track_name"]}}</a> by <a href="/artist?artist={{each["track"]["artist_name"]}}"">{{each["track"]["artist_name"]}}</a><br>
+{%endfor%}
+</div>
+</ul>
+{%endblock%}

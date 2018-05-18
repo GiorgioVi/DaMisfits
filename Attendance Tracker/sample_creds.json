@@ -1,0 +1,9 @@
+{
+  "text_to_speech": {
+    "username": "YOUR USERNAME",
+    "password": "YOUR PASSWORD"
+  },
+  "musix_match": {
+    "key": "YOUR APIKEY"
+  }
+}

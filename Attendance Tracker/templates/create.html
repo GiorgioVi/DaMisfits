@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block body %}
+{% block content1 %}
+<h2 class="text-center"> Create account </h2>
+<br>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <center><font color="red">{{ message }}</font></center><br>
+    {% endfor %}
+{% endif %}
+{% endwith %}
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4 container login">
+    <form method="POST" action="/create">
+  <div class="form-group">
+    <label for="username0"> Udfssername </label>
+    <input type="text" class="form-control" id="username0" name="username" placeholder="Enter username">
+  </div>
+  <div class="form-group">
+    <label for="password0"> Password </label>
+    <input type="password" class="form-control" id="password0" name="password" placeholder="Enter password">
+  </div>
+  <div class="form-group">
+    <label for="password1"> Confirm password </label>
+    <input type="password" class="form-control" id="password1" name="confirmPassword" placeholder="Retype password">
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-block">Submit</button>
+</form>
+
+  </div>
+  <div class="col-md-4"></div>
+</div>
+{% endblock %}
+{% endblock %}

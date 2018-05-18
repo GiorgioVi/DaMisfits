@@ -1,0 +1,32 @@
+{% extends "template.html" %}
+
+{%block title %}
+Login
+{%endblock%}
+{%block content %}
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4 container login">
+    <form method="POST" action="/login">
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      {% for message in messages %}
+      <font color="red">{{ message }}</font><br>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+      <div class="form-group">
+        <label for="user">Username</label>
+        <input name="username" type="text" class="form-control" id="user" placeholder="Enter username">
+      </div>
+      <div class="form-group">
+        <label for="pass">Password</label>
+        <input name="password" type="password" class="form-control" id="pass" placeholder="Enter password">
+      </div>
+      <input class="btn btn-info btn-block" type="submit" name="form" value="Login">
+    </form>
+    New user? <a class="text-muted" href="/create">Create an account</a>
+  </div>
+  <div class="col-md-4"></div>
+</div>
+{% endblock %}
