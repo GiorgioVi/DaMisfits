@@ -66,24 +66,29 @@ def create():
                 return redirect(url_for("login"))
     return render_template("create.html")
 
-@app.route("/profile", methods = ["GET", "POST"])
+@app.route("/profile")
 def profile():
-    if (request.method == "GET"):
-        if not USER_SESSION in session:
-            flash("Please login before viewing profile")
-            return redirect(url_for("login"))
-        else:
-            username = session[USER_SESSION]
-            favorites = db.get_favorites(username)
-            favorites_dict = {}
-            for i in favorites:
-                track = api.get_track(i)
-                favorites_dict[track["track_name"]] = [track["artist_name"], i]
-                print favorites_dict
-            return render_template("profile.html", username = username, favorites_dict = favorites_dict, isLogged = (USER_SESSION in session))
-    else:
-        db.remove_favorite(session[USER_SESSION], request.form["songID"])#must be a post request so remove the desired song
-        return redirect(url_for("profile"))
+    return render_template("profile.html")
+
+@app.route("/home")
+def home():
+    return render_template("home.html")
+
+@app.route("/attendance")
+def attendance():
+    return render_template("attendance.html")
+
+@app.route("/excuse")
+def excuse():
+    return render_template("excuse.html")
+
+@app.route("/class")
+def classes():
+    return render_template("class.html")
+
+@app.route("/student")
+def student():
+    return render_template("student.html")
 
 if __name__ == "__main__":
     d = sqlite3.connect("data/database.db")
