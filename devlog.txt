@@ -18,4 +18,7 @@ pd 9
 
 
 liK -- 2018-05-18 14:21:20
-Added temporary base files with script, added the deployment deliverable yesterday
+	Added temporary base files with script, added the deployment deliverable yesterday
+
+xuJ -- 2018-05-22 14:00:27
+	wrote all the functions in db.py
