@@ -25,3 +25,6 @@ vidaliG -- 2018-05-21 12:46:20
 
 xuJ -- 2018-05-22 14:00:27
 	wrote all the functions in db.py
+
+kevinL -- 2018-05-22 14:52:58
+	added more html files and created initial navbar
