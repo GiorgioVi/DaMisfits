@@ -1,33 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Attendance</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- bootstrap !-->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link href="narrow-jumbotron.css" rel="stylesheet">
-
-  <!-- flash messages !-->
-  {% set messages = get_flashed_messages() %}
-  {% for message in messages %}
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <h3 style="text-align:center;color:red;" class="text-muted" > {{message}} </h3>
-  {% endfor %}
-</head>
-<body style="background-color: lightblue">
-
-
-<div class="header">
-  <br>
-</div>
-
-
+{% extends "base.html" %}
+{% block title %}
+Profile
+{% endblock %}
 <div class="container">
   <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
     <h3><center>Welcome Name</center></h3>
@@ -52,7 +26,3 @@
 </div>
 
   <br><br>
-<div class="row">
-</div>
-</body>
-</html>
