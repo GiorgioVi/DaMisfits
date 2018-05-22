@@ -20,5 +20,8 @@ pd 9
 liK -- 2018-05-18 14:21:20
 	Added temporary base files with script, added the deployment deliverable yesterday
 
+vidaliG -- 2018-05-21 12:46:20
+	Made most of the html pages. Actually doing works. Need to work on my leadership, group is falling behind. Especially Kevin, he's severely lacking.
+
 xuJ -- 2018-05-22 14:00:27
 	wrote all the functions in db.py
