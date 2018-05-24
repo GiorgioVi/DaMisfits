@@ -28,3 +28,6 @@ jackieX -- 2018-05-22 14:00:27
 
 kevinL -- 2018-05-22 14:52:58
 	added more html files and created initial navbar
+
+jackieX -- 2018-05-24 14:51:17
+	debugged and have main.py running
