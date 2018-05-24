@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}
+Registration
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
+    <h3><center>Welcome Name</center></h3>
+  <p class="text-muted text-center">Register for a class</p>
+	<form method = "GET" action = "/register">
+  <center>
+  Enter your class: <br>
+  <input type="text" name="class" required><br><br>
+
+  Enter your classcode:<br>
+  <input type="text" name="classcode" required><br><br>
+
+  Enter your section: <br>
+  <input type="text" name="section" required><br><br>
+
+  <button class="btn btn-default" type="submit" value="submit">Register</button>
+  <br> <br>
+      </form>
+  </form>
+</center>
+  </div>
+</div>
+
+  <br><br>
+{% endblock %}

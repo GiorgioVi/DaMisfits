@@ -1,26 +1,29 @@
-{% extends "base.html" %}
+{% block title %}
+Home
+{% endblock %}
 
+{% block body %}
 <hr>
 <div class="container">
   <div class="row">
     <div class="col">
-    <h1 class="display-4"> SMITH, JOHN </h1>
-    <p class="h6"> Trombone Section </p>
+    <h1 class="display-4"> HOME </h1>
     </div>
   </div>
   <hr>
   <div class="row">
-    <div class="col-9">
+    <div class="col-7">
       <div id="mapContainer" class="card" style="height: 500px;">
       </div>
     </div>
-    <div class="col-3">
+    <div class="col-5">
       <div class="container">
         <div class="row">
           <div class="col">
             <div class="card infobox" style="height: 160px;">
               <div class="text-left">
-              <center> <h5 id="name" style="font-size: 20px;"> Grades </h4> </center>
+                <br>
+              <center> <h5 id="name" style="font-size: 20px;"> Attendance in Pd 4 </h4> </center>
               <hr class="linethingy">
               <p id="data" style="font-size: 14px;">
              <!-- Miles per Vehicle:
@@ -73,3 +76,4 @@
     </div>
 </div>
 <br>    </center>
+{% endblock %}
