@@ -21,15 +21,19 @@ def add_session(username, password):
         flash("Incorrect login credentials")
         return False
 
+@app.route("/")
+def root():
+    return redirect(url_for("login"))
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if USER_SESSION in session:
         accttype = get_account(USER_SESSION)
         if accttype == 'S':
-            return redirect(url_for("/profile"))
+            return redirect(url_for("profile"))
         if accttype == 'L':
-            return redirect(url_for("/attendance"))
-        return redirect(url_for("/home"))
+            return redirect(url_for("attendance"))
+        return redirect(url_for("home"))
     elif (request.method == "GET"):
         return render_template("login.html")
     else:
@@ -38,7 +42,6 @@ def login():
         if add_session(username, password):
             return redirect(url_for("root"))
         return render_template("login.html")
-
 
 @app.route("/logout")
 def logout():
@@ -51,10 +54,10 @@ def create():
     if USER_SESSION in session:
         accttype = get_account(USER_SESSION)
         if accttype == 'S':
-            return redirect(url_for("/profile"))
+            return redirect(url_for("profile"))
         if accttype == 'L':
-            return redirect(url_for("/attendance"))
-        return redirect(url_for("/home"))
+            return redirect(url_for("attendance"))
+        return redirect(url_for("home"))
     if request.method == "POST":
         print request.form["confirmPassword"]
         username = request.form["username"]
@@ -75,49 +78,53 @@ def create():
 @app.route("/profile")
 def profile():
     if not USER_SESSION in session:
-        return redirect(url_for("/login"))
+        return redirect(url_for("login"))
     else:
         return render_template("profile.html")
 
 @app.route("/home")
 def home():
     if not USER_SESSION in session:
-        return redirect(url_for("/login"))
+        return redirect(url_for("login"))
     else:
         return render_template("home.html")
 
 @app.route("/attendance")
 def attendance():
     if not USER_SESSION in session:
-        return redirect(url_for("/login"))
+        return redirect(url_for("login"))
     else:
         return render_template("attendance.html")
 
 @app.route("/excuse")
 def excuse():
     if not USER_SESSION in session:
-        return redirect(url_for("/login"))
+        return redirect(url_for("login"))
     else:
         return render_template("excuse.html")
 
 @app.route("/class")
 def classes():
     if not USER_SESSION in session:
-        return redirect(url_for("/login"))
+        return redirect(url_for("login"))
     else:
         return render_template("class.html")
 
 @app.route("/student")
 def student():
     if not USER_SESSION in session:
-        return redirect(url_for("/login"))
+        return redirect(url_for("login"))
     else:
         return render_template("student.html")
 
 if __name__ == "__main__":
     d = sqlite3.connect("data/database.db")
     c = d.cursor()
-    c.execute("CREATE TABLE IF NOT EXISTS accounts (username TEXT PRIMARY KEY, password TEXT, favorites TEXT);")
+    c.execute("CREATE TABLE IF NOT EXISTS profiles (username TEXT PRIMARY KEY, password TEXT, favorites TEXT);")
+    c.execute("CREATE TABLE IF NOT EXISTS attendance (username TEXT, day TEXT, type TEXT, reason TEXT);")
+    c.execute("CREATE TABLE IF NOT EXISTS classes (teacher TEXT, coursecode TEXT PRIMARY KEY, password, TEXT, type TEXT);")
+    c.execute("CREATE TABLE IF NOT EXISTS leaders (coursecode TEXT, leader TEXT);")
+    c.execute("CREATE TABLE IF NOT EXISTS enrollment (coursecode TEXT, student TEXT);")
     d.commit()
     app.debug = True
     app.run()
