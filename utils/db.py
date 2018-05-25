@@ -63,9 +63,9 @@ def get_account(username):
     if not does_username_exist(coursecode):
         c.execute("SELECT account FROM profiles WHERE username = '%s';" % (username))
         for account in c:
+            db.commit()
+            db.close()
             return account
-        db.commit()
-        db.close()
     print "Username does not exist"
     return False
 
@@ -220,6 +220,34 @@ def remove_student(coursecode, username):
         print "Deleted Student Successful"
         return True
     print "Deleted Student Failed"
+    return False
+
+# Get grade for student in class - Returns the value
+def get_grade(coursecode, username):
+    db = sqlite3.connect(m)
+    c = db.cursor()
+    if not does_course_exist(coursecode) and not does_username_exist(username):
+        c.execute("SELECT grade FROM profiles where coursecode = '%s' AND username = '%s';" % (coursecode, username))
+        for grade in c:
+            print "Grade Returned: " + grade
+            db.commit()
+            db.close()
+            return grade
+        return True
+    print "Receive Grade Failed"
+    return False
+
+# Changes grade for student in class - Returns true if successful or false if not
+def change_grade(coursecode, username, grade):
+    db = sqlite3.connect(m)
+    c = db.cursor()
+    if not does_course_exist(coursecode) and not does_username_exist(username):
+        c.execute("UPDATE profiles SET grade=%d;" % (grade))
+        db.commit()
+        db.close()
+        print "Changed Grade Successful"
+        return True
+    print "Changed Grade Failed"
     return False
 
 if __name__ == '__main__':

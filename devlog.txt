@@ -31,3 +31,6 @@ kevinL -- 2018-05-22 14:52:58
 
 jackieX -- 2018-05-24 14:51:17
 	debugged and have main.py running
+
+jackieX -- 2018-05-25 14:54:06
+	added more into db.py
