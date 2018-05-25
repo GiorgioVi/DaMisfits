@@ -7,20 +7,21 @@
 {% block body %}
 <div class="container">
   <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
-    <h1 style="text-align:center;">Register</h1>
-      <p class="text-muted text-center">Your username must be your stuy.edu email.</p>
-  	<form style="text-align:center;"method = "POST" action ="/create">
+    <H2 style="text-align:center;">Hello, please enter a username and password to register.</h2> <br><br>
+  	<form style="text-align:center;"method = "POST" action ="/create-account">
             Username: <br>
             <input type="text" name="newUsername" required> <br><br>
             Password: <br>
             <input type = "password" name = "newPassword" required>  <br><br>
               Confirm Password: <br>
             <input type="password" name = "repeatPassword" required> <br> <br>
-            <button class="btn btn-default" type="submit" value="Register">Register</button>
+            <button class="btn btn-default" type="submit" style="background-color: lightblue;" value="Register">Register</button>
   	</form>
-  	<form style="text-align:center;" method="get" action="/"> <br>
-      <button class="btn btn-default" type="submit" value="Back" >Back</button>
+	<br>
+  	 <form style="text-align: center;" method="get" action="/">
+          <button class="btn btn-default" type="submit" style="background-color: lightblue;" value="Back To Home Page" >Back To Home Page </button>
         </form>
+
 </center>
 
 
