@@ -80,7 +80,7 @@ def profile():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
-        return render_template("profile.html")
+        return render_template("profile.html", user=USER_SESSION)
 
 @app.route("/home")
 def home():
@@ -94,14 +94,14 @@ def attendance():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
-        return render_template("attendance.html")
+        return render_template("attendance.html", date="10/07/2017", class="UVS11-01")
 
 @app.route("/excuse")
 def excuse():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
-        return render_template("excuse.html")
+        return render_template("excuse.html", name="Giorgio Vidali", user="gvidali@stuy.edu")
 
 @app.route("/class")
 def classes():
@@ -115,7 +115,7 @@ def student():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
-        return render_template("student.html")
+        return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99")
 
 if __name__ == "__main__":
     d = sqlite3.connect("data/database.db")

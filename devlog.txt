@@ -34,3 +34,6 @@ jackieX -- 2018-05-24 14:51:17
 
 jackieX -- 2018-05-25 14:54:06
 	added more into db.py
+
+jackieX -- 2018-05-26 13:23:17
+	base for all html files

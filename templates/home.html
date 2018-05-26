@@ -3,77 +3,38 @@ Home
 {% endblock %}
 
 {% block body %}
-<hr>
 <div class="container">
-  <div class="row">
-    <div class="col">
-    <h1 class="display-4"> HOME </h1>
-    </div>
+  <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
+    <H2 style="text-align:center;">Home</h2> <br><br>
+  	<form style="text-align:center;"method = "POST" action ="/home">
+            Add Section Leaders <br><br>
+            Course Code: <br>
+            <input type="text" name="newCode" required> <br><br>
+            Student 1 username: <br>
+            <input type = "text" name = "student1" required>  <br><br>
+            Student 2 username: <br>
+            <input type = "text" name = "student2" >  <br><br>
+            Student 3 username: <br>
+            <input type = "text" name = "student3" >  <br><br>
+            Student 4 username: <br>
+            <input type = "text" name = "student4" >  <br><br>
+            Student 5 username: <br>
+            <input type = "text" name = "student5" >  <br><br>
+
+            <button class="btn btn-default" type="submit" style="background-color: lightblue;" value="Submit">Submit</button>
+  	</form>
+	<br>
+  	 <form style="text-align: center;" method="get" action="/">
+          <button class="btn btn-default" type="submit" style="background-color: lightblue;" value="Back To Home Page" >Back To Home Page </button>
+        </form>
+
+</center>
+
+
   </div>
-  <hr>
-  <div class="row">
-    <div class="col-7">
-      <div id="mapContainer" class="card" style="height: 500px;">
-      </div>
-    </div>
-    <div class="col-5">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <div class="card infobox" style="height: 160px;">
-              <div class="text-left">
-                <br>
-              <center> <h5 id="name" style="font-size: 20px;"> Attendance in Pd 4 </h4> </center>
-              <hr class="linethingy">
-              <p id="data" style="font-size: 14px;">
-             <!-- Miles per Vehicle:
-              <br>
-              Annual Congestion Cost:
-              <br>
-              Commuter Stress Index:
-              <br>
-              Annual Hours of Delay:
-              <br>
-              Excuess Fuel Consumed: -->
-              <!-- Miles per Vehicle:
-               <br>
-               Annual Congestion Cost:
-               <br>
-               Commuter Stress Index:
-               <br>
-               Annual Hours of Delay:
-               <br>
-               Excuess Fuel Consumed: -->
-               <!-- Miles per Vehicle:
-                <br>
-                Annual Congestion Cost:
-                <br>
-                Commuter Stress Index:
-                <br>
-                Annual Hours of Delay:
-                <br>
-                Excuess Fuel Consumed: -->
-                <!-- Miles per Vehicle:
-                 <br>
-                 Annual Congestion Cost:
-                 <br>
-                 Commuter Stress Index:
-                 <br>
-                 Annual Hours of Delay:
-                 <br>
-                 Excuess Fuel Consumed: -->
-              </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col">
-  </div>
-        </div>
-      </div>
-    </div>
 </div>
-<br>    </center>
+
+  <br><br>
+<div class="row">
+</div>
 {% endblock %}

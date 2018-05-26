@@ -4,77 +4,27 @@ Student Profile
 {% endblock %}
 
 {% block body %}
-<hr>
 <div class="container">
-  <div class="row">
-    <div class="col">
-    <h1 class="display-4"> ATTENDANCE </h1>
-    </div>
+  <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
+    <H2 style="text-align:center;">Attendance for {{class}} {{date}}</h2> <br><br>
+    <form>
+      Jacqueline Xu (jxu10@stuy.edu) <input id="{{class}}" type="checkbox" value="jxu10@stuy.edu"><br>
+      Kevin Li (kli16@stuy.edu) <input id="{{class}}" type="checkbox" value="kli16@stuy.edu"><br>
+      Giorgio Vidali (gvidali@stuy.edu) <input id="{{class}}" type="checkbox" value="gvidali@stuy.edu"><br>
+      Cynthia Cheng (ccheng4@stuy.edu) <input id="{{class}}" type="checkbox" value="ccheng4@stuy.edu"><br>
+    </form>
+	<br>
+  	 <form style="text-align: center;" method="get" action="/">
+          <button class="btn btn-default" type="submit" style="background-color: lightblue;" value="Back To Home Page" >Back To Home Page </button>
+        </form>
+
+</center>
+
+
   </div>
-  <hr>
-  <div class="row">
-    <div class="col-7">
-      <div id="mapContainer" class="card" style="height: 500px;">
-      </div>
-    </div>
-    <div class="col-5">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <div class="card infobox" style="height: 160px;">
-              <div class="text-left">
-                <br>
-              <center> <h5 id="name" style="font-size: 20px;"> Remind People about Absences: </h4> </center>
-              <hr class="linethingy">
-              <p id="data" style="font-size: 14px;">
-             <!-- Miles per Vehicle:
-              <br>
-              Annual Congestion Cost:
-              <br>
-              Commuter Stress Index:
-              <br>
-              Annual Hours of Delay:
-              <br>
-              Excuess Fuel Consumed: -->
-              <!-- Miles per Vehicle:
-               <br>
-               Annual Congestion Cost:
-               <br>
-               Commuter Stress Index:
-               <br>
-               Annual Hours of Delay:
-               <br>
-               Excuess Fuel Consumed: -->
-               <!-- Miles per Vehicle:
-                <br>
-                Annual Congestion Cost:
-                <br>
-                Commuter Stress Index:
-                <br>
-                Annual Hours of Delay:
-                <br>
-                Excuess Fuel Consumed: -->
-                <!-- Miles per Vehicle:
-                 <br>
-                 Annual Congestion Cost:
-                 <br>
-                 Commuter Stress Index:
-                 <br>
-                 Annual Hours of Delay:
-                 <br>
-                 Excuess Fuel Consumed: -->
-              </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col">
-  </div>
-        </div>
-      </div>
-    </div>
 </div>
-<br>    </center>
+
+  <br><br>
+<div class="row">
+</div>
 {% endblock %}

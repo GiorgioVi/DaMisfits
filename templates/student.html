@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}
+Registration
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
+  <h1><center>{{name}}</center></h1>
+  <p class="text-muted text-center">{{user}}</p>
+	<form method = "GET" action = "/register">
+  <center>
+  Number of Excused Absences: 5 <br>
+  Number of Unexcused Absences: 9 <br>
+
+  Grade: <br>
+  <input type="text" name="grade" value="{{grade}}"required><br><br>
+
+  <button class="btn btn-default" type="submit" value="submit">Register</button>
+  <br> <br>
+      </form>
+  </form>
+</center>
+  </div>
+</div>
+
+  <br><br>
+{% endblock %}

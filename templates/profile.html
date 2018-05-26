@@ -4,77 +4,28 @@ Profile
 {% endblock %}
 
 {% block body %}
-<hr>
 <div class="container">
-  <div class="row">
-    <div class="col">
-    <h1 class="display-4"> SMITH, JOHN </h1>
-    <p class="h6"> Trombone Section </p>
-    </div>
+  <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
+    <h3><center>Welcome {{name}}!</center></h3>
+    <p>Number of Excused Absences: 5 </p>
+    <p>Number of Unexcused Absences: 9 </p>
+    <p>Current Grade in UVS11-01: 99</p><br>
+  <p class="text-muted text-center">Register for a class</p>
+	<form method = "GET" action = "/register">
+  <center>
+  Enter your classcode and section:<br>
+  <input type="text" name="classcode" required><br><br>
+
+  Enter the class password (provided by teacher): <br>
+  <input type="profile" name="section" required><br><br>
+
+  <button class="btn btn-default" type="submit" value="submit">Submit</button>
+  <br> <br>
+      </form>
+  </form>
+</center>
   </div>
-  <hr>
-  <div class="row">
-    <div class="col-9">
-      <div id="mapContainer" class="card" style="height: 500px;">
-      </div>
-    </div>
-    <div class="col-3">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <div class="card infobox" style="height: 160px;">
-              <div class="text-left">
-              <center> <h5 id="name" style="font-size: 20px;"> Grades </h4> </center>
-              <hr class="linethingy">
-              <p id="data" style="font-size: 14px;">
-             <!-- Miles per Vehicle:
-              <br>
-              Annual Congestion Cost:
-              <br>
-              Commuter Stress Index:
-              <br>
-              Annual Hours of Delay:
-              <br>
-              Excuess Fuel Consumed: -->
-              <!-- Miles per Vehicle:
-               <br>
-               Annual Congestion Cost:
-               <br>
-               Commuter Stress Index:
-               <br>
-               Annual Hours of Delay:
-               <br>
-               Excuess Fuel Consumed: -->
-               <!-- Miles per Vehicle:
-                <br>
-                Annual Congestion Cost:
-                <br>
-                Commuter Stress Index:
-                <br>
-                Annual Hours of Delay:
-                <br>
-                Excuess Fuel Consumed: -->
-                <!-- Miles per Vehicle:
-                 <br>
-                 Annual Congestion Cost:
-                 <br>
-                 Commuter Stress Index:
-                 <br>
-                 Annual Hours of Delay:
-                 <br>
-                 Excuess Fuel Consumed: -->
-              </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col">
-  </div>
-        </div>
-      </div>
-    </div>
 </div>
-<br>    </center>
+
+  <br><br>
 {% endblock %}
