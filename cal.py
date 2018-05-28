@@ -2,10 +2,6 @@
 print "Content-Type: text/html\n"
 print ''
 
-# CGI FORM RESULTS
-import cgi
-formresults = cgi.FieldStorage()
-
 import datetime
 import calendar
 
@@ -15,6 +11,12 @@ month = now.month
 
 # what weekday the first day of month is
 WDFOM = datetime.date(year, month, 1).weekday()
+
+# If the link specifies a month and year, change it to that month and year
+if "month" in formresults and "year" in formresults:
+    month = int(formresults["month"].value)
+    year = int(formresults["year"].value)
+
 
 # how many days in the month before
 bmonth = month - 1  # Calculating the previous month
@@ -63,13 +65,13 @@ def maketable(test):  # Makes the table
     return final
 
 # Printing everything out
-print "<h1>" + calendar.month_name[month] + ", " + str(year) + "<h1>"
+print "<h1>" + calendar.month_name[month] + ", " + str(year) + "</h1>"
 print maketable(L)
-# Link for previous month using the previously calculated month and year
-blink = ' <button type="button"> <a href="cal.py?year=' + str(byear)
-blink += '&month=' + str(bmonth) + '"> Previous </a></button>'
-print blink
-# Link for next month using the previously calculated month and year
-alink = '<button type="button"> <a href="cal.py?year=' + str(ayear)
-alink += '&month=' + str(amonth) + '"> Next </a></button>'
-print alink
+# # Link for previous month using the previously calculated month and year
+# blink = ' <button type="button"> <a href="cal.py?year=' + str(byear)
+# blink += '&month=' + str(bmonth) + '"> Previous </a></button>'
+# print blink
+# # Link for next month using the previously calculated month and year
+# alink = '<button type="button"> <a href="cal.py?year=' + str(ayear)
+# alink += '&month=' + str(amonth) + '"> Next </a></button>'
+# print alink
