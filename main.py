@@ -23,8 +23,7 @@ def add_session(username, password):
 
 @app.route("/")
 def root():
-    return redirect(url_for("profile"))
-    #return redirect(url_for("login"))
+    return redirect(url_for("login"))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -78,55 +77,55 @@ def create():
 
 @app.route("/profile")
 def profile():
-    now = datetime.datetime.now()
-    year = now.year
-    month = now.month
-    WDFOM = datetime.date(year, month, 1).weekday() # what weekday the first day of month is
-    bmonth = month - 1  # how many days in the month before  and calculating the previous month
-    byear = year
-    if bmonth < 1:  # Accounting for the wrapping around
-        byear -= 1
-        bmonth += 12
-    amonth = month + 1  # Calculating the next month
-    ayear = year
-    if amonth > 12:  # Accounting for the wrapping around
-        ayear += 1
-        amonth -= 12
-    WDFLM = calendar.monthrange(byear, (bmonth))[1]
-    numinmonth = calendar.monthrange(year, (month))[1] # how many days in current month
-    monthTable = []
-    pre = (WDFOM + 1) % 7  # Number of days of the previous month
-    while pre > 0:
-        monthTable.append(WDFLM - pre)  # Add those days in
-        pre -= 1
-    cur = 1
-    while cur <= numinmonth:  # Adding in the days in the current month
-        monthTable.append(cur)
-        cur += 1
-    nex = 1
-    while len(monthTable) % 7 > 0:  # Adding in days until the calendar ends on Saturday
-        monthTable.append(nex)
-        nex += 1
-    def maketable(test):  # Makes the table
-        final = "<table border='1'>\n"
-        final += "<tr> <th> Sunday </th> \
-    <th> Monday </th> <th> Tuesday </th> <th> Wednesday </th> \
-    <th> Thursday </th> <th> Friday </th> <th> Saturday </th> </tr>\n"
-        for x in range(len(test)):
-            if x % 7 == 0:
-                final += '<tr>'
-            final += '<td>' + str(test[x]) + '</td>'
-            if x % 7 == 6:
-                final += '</tr>\n'
-        final += '</table>'
-        return final
-    monthString = Markup("<strong>" + "<h1>" + calendar.month_name[month] + ", " + str(year) + "</h1>" + maketable(monthTable) + "</strong>")
-    print monthString
-    return render_template("profile.html", user=USER_SESSION, month=monthString)
-    # if not USER_SESSION in session:
-    #     return redirect(url_for("login"))
-    # else:
-    #     return render_template("profile.html", user=USER_SESSION)
+    if not USER_SESSION in session:
+        return redirect(url_for("login"))
+    else:
+        now = datetime.datetime.now()
+        year = now.year
+        month = now.month
+        WDFOM = datetime.date(year, month, 1).weekday() # what weekday the first day of month is
+        bmonth = month - 1  # how many days in the month before  and calculating the previous month
+        byear = year
+        if bmonth < 1:  # Accounting for the wrapping around
+            byear -= 1
+            bmonth += 12
+        amonth = month + 1  # Calculating the next month
+        ayear = year
+        if amonth > 12:  # Accounting for the wrapping around
+            ayear += 1
+            amonth -= 12
+        WDFLM = calendar.monthrange(byear, (bmonth))[1]
+        numinmonth = calendar.monthrange(year, (month))[1] # how many days in current month
+        monthTable = []
+        pre = (WDFOM + 1) % 7  # Number of days of the previous month
+        while pre > 0:
+            monthTable.append(WDFLM - pre)  # Add those days in
+            pre -= 1
+        cur = 1
+        while cur <= numinmonth:  # Adding in the days in the current month
+            monthTable.append(cur)
+            cur += 1
+        nex = 1
+        while len(monthTable) % 7 > 0:  # Adding in days until the calendar ends on Saturday
+            monthTable.append(nex)
+            nex += 1
+        def maketable(test):  # Makes the table
+            final = "<table border='1'>\n"
+            final += "<tr> <th> Sunday </th> \
+        <th> Monday </th> <th> Tuesday </th> <th> Wednesday </th> \
+        <th> Thursday </th> <th> Friday </th> <th> Saturday </th> </tr>\n"
+            for x in range(len(test)):
+                if x % 7 == 0:
+                    final += '<tr>'
+                final += '<td>' + str(test[x]) + '</td>'
+                if x % 7 == 6:
+                    final += '</tr>\n'
+            final += '</table>'
+            return final
+        monthString = Markup("<strong>" + "<h1>" + calendar.month_name[month] + ", " + str(year) + "</h1>" + maketable(monthTable) + "</strong>")
+        print monthString
+        return render_template("profile.html", user=USER_SESSION, month=monthString)
+
 
 @app.route("/home")
 def home():
