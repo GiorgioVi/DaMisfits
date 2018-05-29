@@ -60,7 +60,7 @@ def does_username_exist(username):
 def get_account(username):
     db = sqlite3.connect(m)
     c = db.cursor()
-    if not does_username_exist(coursecode):
+    if not does_username_exist(username):
         c.execute("SELECT account FROM profiles WHERE username = '%s';" % (username))
         for account in c:
             db.commit()

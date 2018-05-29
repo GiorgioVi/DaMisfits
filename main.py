@@ -28,7 +28,7 @@ def root():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if USER_SESSION in session:
-        accttype = get_account(USER_SESSION)
+        accttype = db.get_account(USER_SESSION)
         if accttype == 'S':
             return redirect(url_for("profile"))
         if accttype == 'L':
@@ -41,7 +41,7 @@ def login():
         password = request.form["password"]
         if add_session(username, password):
             return redirect(url_for("root"))
-        return render_template("login.html")
+    return render_template("login.html")
 
 @app.route("/logout")
 def logout():
@@ -52,7 +52,7 @@ def logout():
 @app.route("/create", methods=["GET", "POST"])
 def create():
     if USER_SESSION in session:
-        accttype = get_account(USER_SESSION)
+        accttype = db.get_account(USER_SESSION)
         if accttype == 'S':
             return redirect(url_for("profile"))
         if accttype == 'L':
@@ -61,6 +61,8 @@ def create():
     if request.method == "POST":
         print request.form["confirmPassword"]
         username = request.form["username"]
+        fullname = request.form["fullname"]
+        accttype = request.form["accttype"]
         password = request.form["password"]
         confirm_password = request.form["confirmPassword"]
 
@@ -69,7 +71,7 @@ def create():
         elif password != confirm_password:
             flash("Password and password confirmation do not match")
         else:
-            if not db.create_account(username, password):
+            if not db.create_account(username, password, fullname, accttype):
                 flash("Username taken")
             else:
                 return redirect(url_for("login"))
@@ -77,9 +79,9 @@ def create():
 
 @app.route("/profile")
 def profile():
-    # if not USER_SESSION in session:
-    #     return redirect(url_for("login"))
-    # else:
+    if not USER_SESSION in session:
+        return redirect(url_for("login"))
+    else:
         now = datetime.datetime.now()
         year = now.year
         month = now.month
@@ -165,7 +167,7 @@ def student():
 if __name__ == "__main__":
     d = sqlite3.connect("data/database.db")
     c = d.cursor()
-    c.execute("CREATE TABLE IF NOT EXISTS profiles (username TEXT PRIMARY KEY, password TEXT, favorites TEXT);")
+    c.execute("CREATE TABLE IF NOT EXISTS profiles (username TEXT PRIMARY KEY, password TEXT, fullname TEXT, account TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS attendance (username TEXT, day TEXT, type TEXT, reason TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS classes (teacher TEXT, coursecode TEXT PRIMARY KEY, password, TEXT, type TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS leaders (coursecode TEXT, leader TEXT);")
