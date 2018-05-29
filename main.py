@@ -77,9 +77,9 @@ def create():
 
 @app.route("/profile")
 def profile():
-    if not USER_SESSION in session:
-        return redirect(url_for("login"))
-    else:
+    # if not USER_SESSION in session:
+    #     return redirect(url_for("login"))
+    # else:
         now = datetime.datetime.now()
         year = now.year
         month = now.month
