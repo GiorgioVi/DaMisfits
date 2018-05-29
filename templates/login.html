@@ -11,21 +11,21 @@ Login
 
   <center>
   <h2>Login</h2> <br>
-  <form method = "POST" action ="/authenticate">
+  <form method = "POST" action ="/login">
 
-  Enter your username:<br>
-  <input type="text" name="username" required><br><br>
-
-  Enter your password: <br>
-  <input type="password" name="password" required><br><br>
-
-  <button style="background-color: lightblue;" class="btn btn-default" type="submit" value="submit">Login</button>
-  <br> <br>
+  <div class="form-group">
+    <label for="user">Enter your Username</label>
+    <input name="username" type="text" class="form-control" id="user" placeholder="Enter username">
+  </div>
+  <div class="form-group">
+    <label for="pass">Enter your Password</label>
+    <input name="password" type="password" class="form-control" id="pass" placeholder="Enter password">
+  </div>
+  <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Login">
+  <br><br>
       </form>
 
-  <form method = "GET" action = "/create">
-  Don't have an account?
-  <button style="background-color: lightblue;" class="btn btn-default" type="submit" value="Create">Register</button>
+  Don't have an account? <a class="text-muted" href="/create">Register</a>
   </form>
 </center>
   </div>
