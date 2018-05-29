@@ -35,13 +35,13 @@ def login():
             return redirect(url_for("attendance"))
         return redirect(url_for("home"))
     elif (request.method == "GET"):
-        return render_template("login.html")
+        return render_template("login.html", isLogged = (USER_SESSION in session))
     else:
         username = request.form["username"]
         password = request.form["password"]
         if add_session(username, password):
             return redirect(url_for("root"))
-    return render_template("login.html")
+    return render_template("login.html", isLogged = (USER_SESSION in session))
 
 @app.route("/logout")
 def logout():
@@ -75,7 +75,7 @@ def create():
                 flash("Username taken")
             else:
                 return redirect(url_for("login"))
-    return render_template("create.html")
+    return render_template("create.html", isLogged = (USER_SESSION in session))
 
 @app.route("/profile")
 def profile():
@@ -134,7 +134,7 @@ def home():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
-        return render_template("home.html")
+        return render_template("home.html", isLogged = (USER_SESSION in session))
 
 @app.route("/attendance")
 def attendance():
