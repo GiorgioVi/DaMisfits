@@ -126,7 +126,7 @@ def profile():
             return final
         monthString = Markup("<strong>" + "<h1>" + calendar.month_name[month] + ", " + str(year) + "</h1>" + maketable(monthTable) + "</strong>")
         print monthString
-        return render_template("profile.html", user=USER_SESSION, month=monthString)
+        return render_template("profile.html", user=USER_SESSION, month=monthString, isLogged = (USER_SESSION in session))
 
 
 @app.route("/home")
@@ -141,28 +141,28 @@ def attendance():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
-        return render_template("attendance.html", date="10/07/2017", course="UVS11-01")
+        return render_template("attendance.html", date="10/07/2017", course="UVS11-01", isLogged = (USER_SESSION in session))
 
 @app.route("/excuse")
 def excuse():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
-        return render_template("excuse.html", name="Giorgio Vidali", user="gvidali@stuy.edu")
+        return render_template("excuse.html", name="Giorgio Vidali", user="gvidali@stuy.edu", isLogged = (USER_SESSION in session))
 
 @app.route("/class")
 def classes():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
-        return render_template("class.html")
+        return render_template("class.html", isLogged = (USER_SESSION in session))
 
 @app.route("/student")
 def student():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
-        return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99")
+        return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99", isLogged = (USER_SESSION in session))
 
 if __name__ == "__main__":
     d = sqlite3.connect("data/database.db")
