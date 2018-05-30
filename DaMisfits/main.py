@@ -66,7 +66,9 @@ def create():
         password = request.form["password"]
         confirm_password = request.form["confirmPassword"]
 
-        if is_null(username, password, confirm_password):
+        if not username.endswith("@stuy.edu"):
+            flash("Email must be your stuy.edu email")
+        elif is_null(username, password, confirm_password):
             flash("A field was left empty")
         elif password != confirm_password:
             flash("Password and password confirmation do not match")
