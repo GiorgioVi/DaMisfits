@@ -44,5 +44,8 @@ jackieX -- 2018-05-29 08:19:02
 kevinL -- 2018-05-29 12:45:35
 	got login logout navbar to work
 
+kevinL -- 2018-05-31 14:35:54
+	worked on permission things
+
 jackieX -- 2018-05-31 14:38:42
-	radio buttons and permissions for stusers
+	radio buttons and permissions for users
