@@ -136,6 +136,11 @@ def home():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
+        accttype = db.get_account(USER_SESSION)
+        if accttype == 'S':
+            return redirect(url_for("profile"))
+        if accttype == 'L':
+            return redirect(url_for("attendance"))
         return render_template("home.html", isLogged = (USER_SESSION in session))
 
 @app.route("/attendance")
@@ -143,6 +148,10 @@ def attendance():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
+        if accttype == 'S':
+            return redirect(url_for("profile"))
+        if accttype == 'T':
+            return redirect(url_for("home"))
         return render_template("attendance.html", date="10/07/2017", course="UVS11-01", isLogged = (USER_SESSION in session))
 
 @app.route("/excuse")
@@ -150,6 +159,8 @@ def excuse():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
+        if accttype == 'S':
+            return redirect(url_for("profile"))
         return render_template("excuse.html", name="Giorgio Vidali", user="gvidali@stuy.edu", isLogged = (USER_SESSION in session))
 
 @app.route("/class")
@@ -157,6 +168,10 @@ def classes():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
+        if accttype == 'S':
+            return redirect(url_for("profile"))
+        if accttype == 'L':
+            return redirect(url_for("attendance"))
         return render_template("class.html", isLogged = (USER_SESSION in session))
 
 @app.route("/student")
@@ -164,6 +179,10 @@ def student():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
+        if accttype == 'S':
+            return redirect(url_for("profile"))
+        if accttype == 'L':
+            return redirect(url_for("attendance"))
         return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99", isLogged = (USER_SESSION in session))
 
 if __name__ == "__main__":
