@@ -35,13 +35,13 @@ def login():
             return redirect(url_for("attendance"))
         return redirect(url_for("home"))
     elif (request.method == "GET"):
-        return render_template("login.html", isLogged = (USER_SESSION in session))
+        return render_template("login.html", isLogged=USER_SESSION in session)
     else:
         username = request.form["username"]
         password = request.form["password"]
         if add_session(username, password):
             return redirect(url_for("root"))
-    return render_template("login.html", isLogged = (USER_SESSION in session))
+    return render_template("login.html", isLogged=USER_SESSION in session)
 
 @app.route("/logout")
 def logout():
@@ -59,7 +59,6 @@ def create():
             return redirect(url_for("attendance"))
         return redirect(url_for("home"))
     if request.method == "POST":
-        print request.form["confirmPassword"]
         username = request.form["username"]
         fullname = request.form["fullname"]
         accttype = request.form["accttype"]
@@ -77,13 +76,14 @@ def create():
                 flash("Username taken")
             else:
                 return redirect(url_for("login"))
-    return render_template("create.html", isLogged = (USER_SESSION in session))
+    return render_template("create.html", isLogged=USER_SESSION in session)
 
 @app.route("/profile")
 def profile():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
+        accttype = db.get_account(USER_SESSION)
         now = datetime.datetime.now()
         year = now.year
         month = now.month
@@ -128,7 +128,7 @@ def profile():
             return final
         monthString = Markup("<strong>" + "<h1>" + calendar.month_name[month] + ", " + str(year) + "</h1>" + maketable(monthTable) + "</strong>")
         print monthString
-        return render_template("profile.html", user=USER_SESSION, month=monthString, isLogged = (USER_SESSION in session))
+        return render_template("profile.html", user=USER_SESSION, month=monthString, isLogged=USER_SESSION in session, acct=accttype)
 
 
 @app.route("/home")
@@ -141,49 +141,53 @@ def home():
             return redirect(url_for("profile"))
         if accttype == 'L':
             return redirect(url_for("attendance"))
-        return render_template("home.html", isLogged = (USER_SESSION in session))
+        return render_template("home.html", isLogged=USER_SESSION in session, acct=accttype)
 
 @app.route("/attendance")
 def attendance():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
+        accttype = db.get_account(USER_SESSION)
         if accttype == 'S':
             return redirect(url_for("profile"))
         if accttype == 'T':
             return redirect(url_for("home"))
-        return render_template("attendance.html", date="10/07/2017", course="UVS11-01", isLogged = (USER_SESSION in session))
+        return render_template("attendance.html", date="10/07/2017", course="UVS11-01", isLogged=USER_SESSION in session, acct=accttype)
 
 @app.route("/excuse")
 def excuse():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
+        accttype = db.get_account(USER_SESSION)
         if accttype == 'S':
             return redirect(url_for("profile"))
-        return render_template("excuse.html", name="Giorgio Vidali", user="gvidali@stuy.edu", isLogged = (USER_SESSION in session))
+        return render_template("excuse.html", name="Giorgio Vidali", user="gvidali@stuy.edu", isLogged=USER_SESSION in session, acct=accttype)
 
 @app.route("/class")
 def classes():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
+        accttype = db.get_account(USER_SESSION)
         if accttype == 'S':
             return redirect(url_for("profile"))
         if accttype == 'L':
             return redirect(url_for("attendance"))
-        return render_template("class.html", isLogged = (USER_SESSION in session))
+        return render_template("class.html", isLogged=USER_SESSION in session, acct=accttype)
 
 @app.route("/student")
 def student():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
     else:
+        accttype = db.get_account(USER_SESSION)
         if accttype == 'S':
             return redirect(url_for("profile"))
         if accttype == 'L':
             return redirect(url_for("attendance"))
-        return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99", isLogged = (USER_SESSION in session))
+        return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99", isLogged=USER_SESSION in session, acct=accttype)
 
 if __name__ == "__main__":
     d = sqlite3.connect("data/database.db")
