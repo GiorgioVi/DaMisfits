@@ -223,3 +223,41 @@ CalendarConstructor.prototype.renderCalendar = function(id, count, month, year) 
 var calendar = new CalendarConstructor();
 
 calendar.renderCalendar("calendar", 3, 2016, 9);
+
+
+
+// <div id="calendar" class="container cf"></div>
+//
+// .calendar-wrap {
+// 	float: left;
+// }
+//
+// .calendar {
+// 	border: 1px solid #000;
+// }
+//
+// .calendar-head th {
+// 	padding: 3px 5px;
+// 	border-bottom: 1px solid #000;
+// 	text-align: center;
+// }
+//
+// .calendar-body td {
+// 	padding: 3px 5px;
+// 	text-align: center;
+// }
+//
+// .container {
+// 	padding: 10px;
+// 	border: 1px solid;
+// }
+//
+// .cf:before,
+// .cf:after {
+//     content: " ";
+//     display: table;
+// }
+//
+// .cf:after {
+//     clear: both;
+// }
