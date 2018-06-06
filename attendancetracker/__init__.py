@@ -185,11 +185,8 @@ def student():
             return redirect(url_for("attendance"))
         return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99", isLogged = (USER_SESSION in session))
 
-if __name__ == "__main__":
-    DIR = os.path.dirname(__file__)
-    DIR += '/'
-    DATA = DIR + "data/database.db"
-    d = sqlite3.connect(DATA)
+if __name__ == "__main__": 
+    d = sqlite3.connect("data/database.db")
     c = d.cursor()
     c.execute("CREATE TABLE IF NOT EXISTS profiles (username TEXT PRIMARY KEY, password TEXT, fullname TEXT, account TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS attendance (username TEXT, day TEXT, type TEXT, reason TEXT);")

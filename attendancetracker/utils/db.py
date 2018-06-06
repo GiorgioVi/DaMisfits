@@ -3,10 +3,11 @@ import os
 
 DIR = os.path.dirname(__file__)
 DIR += '/'
-m = DIR + "data/database.db"
+m = DIR + "../data/database.db"
 
 # Login - Returns true if successful, false otherwise
 def login(username, password):
+    print "THIS IS M" + m
     db = sqlite3.connect(m)
     c = db.cursor()
     c.execute("SELECT username, password FROM profiles WHERE username = '%s';" % (username));
