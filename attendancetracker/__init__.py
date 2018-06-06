@@ -28,7 +28,7 @@ def root():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if USER_SESSION in session:
-        accttype = db.get_account(USER_SESSION)
+        accttype = db.get_account(session[USER_SESSION])
         if accttype == 'S':
             return redirect(url_for("profile"))
         if accttype == 'L':
@@ -185,7 +185,7 @@ def student():
             return redirect(url_for("attendance"))
         return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99", isLogged = (USER_SESSION in session))
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
     d = sqlite3.connect("data/database.db")
     c = d.cursor()
     c.execute("CREATE TABLE IF NOT EXISTS profiles (username TEXT PRIMARY KEY, password TEXT, fullname TEXT, account TEXT);")
