@@ -1,4 +1,5 @@
 import sqlite3, hashlib
+import os
 
 DIR = os.path.dirname(__file__)
 DIR += '/'
