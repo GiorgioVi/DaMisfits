@@ -1,6 +1,8 @@
 import sqlite3, hashlib
 
-m = "data/database.db"
+DIR = os.path.dirname(__file__)
+DIR += '/'
+m = DIR + "data/database.db"
 
 # Login - Returns true if successful, false otherwise
 def login(username, password):
