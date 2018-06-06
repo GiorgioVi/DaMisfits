@@ -67,6 +67,8 @@ def create():
 
         if not username.endswith("@stuy.edu"):
             flash("Email must be your stuy.edu email")
+        if accttype == "T" and not db.encrypt_password(password) == "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb":
+            flash("Must include admin password to create teacher account")
         elif is_null(username, password, confirm_password):
             flash("A field was left empty")
         elif password != confirm_password:

@@ -45,8 +45,10 @@ def does_username_exist(username):
     db = sqlite3.connect(m)
     c = db.cursor()
     c.execute("SELECT username FROM profiles WHERE username = '%s';" % (username))
+    print c
     for account in c:
         # Username exists
+        print account
         print "Username exists"
         db.commit()
         db.close()
