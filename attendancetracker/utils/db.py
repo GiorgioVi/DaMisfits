@@ -67,7 +67,7 @@ def get_account(username):
         for account in c:
             db.commit()
             db.close()
-            return account
+            return account[0]
     print "Username does not exist"
     return False
 

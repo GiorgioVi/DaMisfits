@@ -28,7 +28,8 @@ def root():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if USER_SESSION in session:
-        accttype = db.get_account(USER_SESSION)
+        print USER_SESSION
+        accttype = db.get_account(session[USER_SESSION])
         if accttype == 'S':
             return redirect(url_for("profile"))
         if accttype == 'L':

@@ -187,7 +187,7 @@ def student():
 
 if __name__ == "__main__":
     DIR = os.path.dirname(__file__)
-    DIR += ‘/’
+    DIR += '/'
     DATA = DIR + "data/database.db"
     d = sqlite3.connect(DATA)
     c = d.cursor()
