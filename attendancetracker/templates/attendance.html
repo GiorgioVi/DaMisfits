@@ -4,20 +4,36 @@ Student Profile
 {% endblock %}
 
 {% block body %}
+
 <div class="container">
   <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
-    <H2 style="text-align:center;">Attendance for {{class}} {{date}}</h2> <br><br>
+    <form method = "POST" action ="/attendance">
+      Date: <br>
+      <input type="date" name="date" required>
+      Class: <br>
+      <select>
+        {% for each in classes %}
+        <option value="{{each}}">{{each}}</option>
+        {% endfor %}
+      </select>
+      <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Submit">
+      <br><br>
+    </form>
+
+    {% if not searched %}
+    <h2 style="text-align:center;">Attendance for {{class}} on {{date}}</h2><br><br>
     <form>
       Jacqueline Xu (jxu10@stuy.edu) <input id="{{class}}" type="checkbox" value="jxu10@stuy.edu"><br>
       Kevin Li (kli16@stuy.edu) <input id="{{class}}" type="checkbox" value="kli16@stuy.edu"><br>
       Giorgio Vidali (gvidali@stuy.edu) <input id="{{class}}" type="checkbox" value="gvidali@stuy.edu"><br>
       Cynthia Cheng (ccheng4@stuy.edu) <input id="{{class}}" type="checkbox" value="ccheng4@stuy.edu"><br>
       <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Submit">
+    </form><br>
+    {% endif %}
+
+    <form style="text-align: center;" method="get" action="/">
+      <button class="btn btn-default" type="submit" style="background-color: lightblue;" value="Back To Home Page" >Back To Home Page </button>
     </form>
-	<br>
-  	 <form style="text-align: center;" method="get" action="/">
-          <button class="btn btn-default" type="submit" style="background-color: lightblue;" value="Back To Home Page" >Back To Home Page </button>
-        </form>
 
 </center>
 

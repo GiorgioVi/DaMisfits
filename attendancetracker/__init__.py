@@ -7,8 +7,8 @@ USER_SESSION = "logged_in"
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
 
-def is_null(username, password, confpw):
-    return username == "" or password == "" or confpw == ""
+def is_null(username, fullname, password, confpw):
+    return username == "" or fullname == "" or password == "" or confpw == ""
 
 def add_session(username, password):
     if is_null(username, password, "filler"):
@@ -28,7 +28,8 @@ def root():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if USER_SESSION in session:
-        accttype = db.get_account(session[USER_SESSION])
+        user = session[USER_SESSION]
+        accttype = db.get_account(user)
         if accttype == 'S':
             return redirect(url_for("profile"))
         if accttype == 'L':
@@ -52,19 +53,21 @@ def logout():
 @app.route("/create", methods=["GET", "POST"])
 def create():
     if USER_SESSION in session:
-        accttype = db.get_account(USER_SESSION)
+        user = session[USER_SESSION]
+        accttype = db.get_account(user)
         if accttype == 'S':
             return redirect(url_for("profile"))
         if accttype == 'L':
             return redirect(url_for("attendance"))
         return redirect(url_for("home"))
+
     if request.method == "POST":
-        print request.form["confirmPassword"]
         username = request.form["username"]
         fullname = request.form["fullname"]
         accttype = request.form["accttype"]
         password = request.form["password"]
         confirm_password = request.form["confirmPassword"]
+        admin_password = request.form["adminPassword"]
 
         if not username.endswith("@stuy.edu"):
             flash("Email must be your stuy.edu email")
@@ -72,118 +75,106 @@ def create():
             flash("A field was left empty")
         elif password != confirm_password:
             flash("Password and password confirmation do not match")
+        elif not db.create_account(username, password, fullname, accttype):
+            flash("Username taken")
+        elif accttype == 'T':
+            if admin_password == "":
+                flash("To create a teacher account, please enter admin password")
+            elif admin_password and encrypt_password(admin_password) != 'ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb':
+                flash("Admin password is incorrect")
         else:
-            if not db.create_account(username, password, fullname, accttype):
-                flash("Username taken")
-            else:
-                return redirect(url_for("login"))
+            return redirect(url_for("login"))
+
     return render_template("create.html", isLogged = (USER_SESSION in session))
 
 @app.route("/profile")
 def profile():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
-    else:
-        now = datetime.datetime.now()
-        year = now.year
-        month = now.month
-        WDFOM = datetime.date(year, month, 1).weekday() # what weekday the first day of month is
-        bmonth = month - 1  # how many days in the month before  and calculating the previous month
-        byear = year
-        if bmonth < 1:  # Accounting for the wrapping around
-            byear -= 1
-            bmonth += 12
-        amonth = month + 1  # Calculating the next month
-        ayear = year
-        if amonth > 12:  # Accounting for the wrapping around
-            ayear += 1
-            amonth -= 12
-        WDFLM = calendar.monthrange(byear, (bmonth))[1]
-        numinmonth = calendar.monthrange(year, (month))[1] # how many days in current month
-        monthTable = []
-        pre = (WDFOM + 1) % 7  # Number of days of the previous month
-        while pre > 0:
-            monthTable.append(WDFLM - pre)  # Add those days in
-            pre -= 1
-        cur = 1
-        while cur <= numinmonth:  # Adding in the days in the current month
-            monthTable.append(cur)
-            cur += 1
-        nex = 1
-        while len(monthTable) % 7 > 0:  # Adding in days until the calendar ends on Saturday
-            monthTable.append(nex)
-            nex += 1
-        def maketable(test):  # Makes the table
-            final = "<table border='1'>\n"
-            final += "<tr> <th> Sunday </th> \
-        <th> Monday </th> <th> Tuesday </th> <th> Wednesday </th> \
-        <th> Thursday </th> <th> Friday </th> <th> Saturday </th> </tr>\n"
-            for x in range(len(test)):
-                if x % 7 == 0:
-                    final += '<tr>'
-                final += '<td>' + str(test[x]) + '</td>'
-                if x % 7 == 6:
-                    final += '</tr>\n'
-            final += '</table>'
-            return final
-        monthString = Markup("<strong>" + "<h1>" + calendar.month_name[month] + ", " + str(year) + "</h1>" + maketable(monthTable) + "</strong>")
-        print monthString
-        return render_template("profile.html", user=USER_SESSION, month=monthString, isLogged = (USER_SESSION in session))
+
+    user = session[USER_SESSION]
+    accttype = db.get_account(user)
+    if accttype == 'T':
+        return redirect(url_for("home"))
+
+    return render_template("profile.html", username=user, isLogged = (USER_SESSION in session))
 
 
 @app.route("/home")
 def home():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
-    else:
-        accttype = db.get_account(USER_SESSION)
-        if accttype == 'S':
-            return redirect(url_for("profile"))
-        if accttype == 'L':
-            return redirect(url_for("attendance"))
-        return render_template("home.html", isLogged = (USER_SESSION in session))
+
+    user = session[USER_SESSION]
+    accttype = db.get_account(user)
+    if accttype == 'S':
+        return redirect(url_for("profile"))
+    if accttype == 'L':
+        return redirect(url_for("attendance"))
+
+    return render_template("home.html", isLogged = (USER_SESSION in session))
 
 @app.route("/attendance")
 def attendance():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
-    else:
-        if accttype == 'S':
-            return redirect(url_for("profile"))
-        if accttype == 'T':
-            return redirect(url_for("home"))
-        return render_template("attendance.html", date="10/07/2017", course="UVS11-01", isLogged = (USER_SESSION in session))
+
+    user = session[USER_SESSION]
+    accttype = db.get_account(user)
+    if accttype == 'S':
+        return redirect(url_for("profile"))
+
+    classes = db.get_classes()
+    if request.method == "POST":
+        date = request.form["date"]
+        course = request.form["course"]
+        
+        return render_template("attendance.html", courses=classes, date = date, course = course, classes = classes, isLogged = (USER_SESSION in session), searched = True)
+
+    return render_template("attendance.html", courses=classes, isLogged = (USER_SESSION in session))
 
 @app.route("/excuse")
 def excuse():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
-    else:
-        if accttype == 'S':
-            return redirect(url_for("profile"))
-        return render_template("excuse.html", name="Giorgio Vidali", user="gvidali@stuy.edu", isLogged = (USER_SESSION in session))
+
+    user = session[USER_SESSION]
+    accttype = db.get_account(user)
+    if accttype == 'S':
+        return redirect(url_for("profile"))
+
+    if request.method == "POST":
+        date = request.form["date"]
+        reason = request.form["reason"]
+
+
+    return render_template("excuse.html", name="Giorgio Vidali", username="gvidali@stuy.edu", isLogged = (USER_SESSION in session))
 
 @app.route("/class")
 def classes():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
-    else:
-        if accttype == 'S':
-            return redirect(url_for("profile"))
-        if accttype == 'L':
-            return redirect(url_for("attendance"))
-        return render_template("class.html", isLogged = (USER_SESSION in session))
+
+    user = session[USER_SESSION]
+    accttype = db.get_account(user)
+    if accttype == 'S':
+        return redirect(url_for("profile"))
+
+    return render_template("class.html", isLogged = (USER_SESSION in session))
 
 @app.route("/student")
 def student():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
-    else:
-        if accttype == 'S':
-            return redirect(url_for("profile"))
-        if accttype == 'L':
-            return redirect(url_for("attendance"))
-        return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99", isLogged = (USER_SESSION in session))
+
+    user = session[USER_SESSION]
+    accttype = db.get_account(user)
+    if accttype == 'S':
+        return redirect(url_for("profile"))
+    if accttype == 'L':
+        return redirect(url_for("attendance"))
+
+    return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99", isLogged = (USER_SESSION in session))
 
 if __name__ == "__main__":
     d = sqlite3.connect("data/database.db")

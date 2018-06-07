@@ -52,7 +52,6 @@ def does_username_exist(username):
     print c
     for account in c:
         # Username exists
-        print account
         print "Username exists"
         db.commit()
         db.close()
@@ -85,7 +84,7 @@ def get_classtype(coursecode):
             print "Class Type Returned: " + course
             db.commit()
             db.close()
-            return course
+            return course[0]
     print "Course does not exist"
     return False
 
@@ -102,6 +101,22 @@ def get_leaders(coursecode):
         db.commit()
         db.close()
         return leaders
+    print "Course does not exist"
+    return False
+
+# Returns a list of students enrolled in a specific course - else Returns False if failed
+def get_students(coursecode):
+    db = sqlite3.connect(m)
+    c = db.cursor()
+    if not does_course_exist(coursecode):
+        c.execute("SELECT student FROM enrollment WHERE coursecode = '%s';" % (coursecode))
+        students = []
+        for student in c:
+            students.append(student)
+        print "Students Returned: " + students
+        db.commit()
+        db.close()
+        return students
     print "Course does not exist"
     return False
 
@@ -172,6 +187,19 @@ def create_class(teacher, coursecode, password, type):
     print "Create Course Failed"
     return False
 
+# Gets all the available classes
+def get_classes(teacher):
+    db = sqlite3.connect(m)
+    c = db.cursor()
+    c.execute("SELECT * FROM classes;")
+    classes = []
+    for course in c:
+        classes.append(course)
+    print "Classes Returned: " + classes
+    db.commit()
+    db.close()
+    return classes
+
 # Adds leader to the class - Returns true if successful or false if not
 def add_leader(coursecode, username):
     db = sqlite3.connect(m)
@@ -201,12 +229,12 @@ def remove_leader(coursecode, username):
     return False
 
 # Adds student to the class - Returns true if successful or false if not
-def add_student(coursecode, username):
+def add_student(coursecode, username, fullname):
     db = sqlite3.connect(m)
     c = db.cursor()
     if not does_course_exist(coursecode) and not does_username_exist(username):
         # Add student to enrollment table
-        c.execute("INSERT INTO enrollment VALUES('%s', '%s');" % (coursecode, username))
+        c.execute("INSERT INTO enrollment VALUES('%s', '%s', '%s');" % (coursecode, username, fullname))
         db.commit()
         db.close()
         print "Add Leader Successful"
@@ -228,6 +256,8 @@ def remove_student(coursecode, username):
     print "Deleted Student Failed"
     return False
 
+
+
 # Get grade for student in class - Returns the value
 def get_grade(coursecode, username):
     db = sqlite3.connect(m)
@@ -238,7 +268,7 @@ def get_grade(coursecode, username):
             print "Grade Returned: " + grade
             db.commit()
             db.close()
-            return grade
+            return grade[0]
         return True
     print "Receive Grade Failed"
     return False
@@ -264,7 +294,7 @@ if __name__ == '__main__':
     c.execute("CREATE TABLE IF NOT EXISTS attendance (username TEXT, day TEXT, type TEXT, reason TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS classes (teacher TEXT, coursecode TEXT PRIMARY KEY, password, TEXT, type TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS leaders (coursecode TEXT, leader TEXT);")
-    c.execute("CREATE TABLE IF NOT EXISTS enrollment (coursecode TEXT, student TEXT);")
+    c.execute("CREATE TABLE IF NOT EXISTS enrollment (coursecode TEXT, student TEXT, name TEXT, grade INT);")
     db.commit()
     create_account("jxu10@stuy.edu", "ibm135")
     create_account("gvidali@stuy.edu", "shrek")
