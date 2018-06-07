@@ -52,3 +52,6 @@ jackieX -- 2018-05-31 14:38:42
 
 kevinL -- 2018-06-06 15:34:25
 	debugged account type errors, figured out deployment problems, working with jackie on transferring changes from main.py to __init__.py
+
+kevinL -- 2018-06-07 18:04:55
+	fixed more styling, updated navbar and other stuff idk
