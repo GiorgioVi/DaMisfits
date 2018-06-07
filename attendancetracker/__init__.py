@@ -11,7 +11,7 @@ def is_null(username, fullname, password, confpw):
     return username == "" or fullname == "" or password == "" or confpw == ""
 
 def add_session(username, password):
-    if is_null(username, password, "filler"):
+    if is_null(username, password, "filler", "filler"):
             flash("Username or password is blank")
             return False
     if(db.login(username, password)):#if credentials match up in the db...
@@ -71,7 +71,7 @@ def create():
 
         if not username.endswith("@stuy.edu"):
             flash("Email must be your stuy.edu email")
-        elif is_null(username, password, confirm_password):
+        elif is_null(username, fullname, password, confirm_password):
             flash("A field was left empty")
         elif password != confirm_password:
             flash("Password and password confirmation do not match")
@@ -80,7 +80,7 @@ def create():
         elif accttype == 'T':
             if admin_password == "":
                 flash("To create a teacher account, please enter admin password")
-            elif admin_password and encrypt_password(admin_password) != 'ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb':
+            elif admin_password and db.encrypt_password(admin_password) != 'ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb':
                 flash("Admin password is incorrect")
         else:
             return redirect(url_for("login"))
@@ -128,7 +128,7 @@ def attendance():
     if request.method == "POST":
         date = request.form["date"]
         course = request.form["course"]
-        
+
         return render_template("attendance.html", courses=classes, date = date, course = course, classes = classes, isLogged = (USER_SESSION in session), searched = True)
 
     return render_template("attendance.html", courses=classes, isLogged = (USER_SESSION in session))
