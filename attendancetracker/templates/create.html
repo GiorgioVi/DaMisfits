@@ -22,9 +22,18 @@
     <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Enter full name" required>
   </div>
   <div class="form-group">
-    <label for="accttype"> Account Type </label><br>
-    <input type="radio" class="form-control" name="accttype" value="S">Student
-    <input type="radio" class="form-control" name="accttype" value="T">Teacher
+    <label for="accttype"> Account Type </label>
+    <br>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label class="btn btn-default btn-info btn-block">
+        <input type="radio" name="acttype" value="S" id="option1" autocomplete="off"> Student
+      </label>
+      <label class="btn btn-default btn-info btn-block" >
+        <input type="radio" name="acttype" value="T" id="option2" autocomplete="off"> Teacher
+      </label>
+    </div>
+
+
   </div>
   <div class="form-group">
     <label for="admin"> Admin Password</label>
@@ -40,7 +49,7 @@
   </div>
 
 
-  <button type="submit" style="background-color: lightblue;" class="btn btn-primary btn-block">Register</button>
+  <button type="submit" class="btn btn-info btn-block">Register</button>
 </form>
 
   </div>
@@ -50,7 +59,7 @@
 </div>
 	<br>
   	 <form style="text-align: center;" method="get" action="/">
-          <button class="btn btn-default" type="submit" style="background-color: lightblue;" value="Back To Home Page" >Back To Home Page </button>
+          <button class="btn btn-default btn-success" type="submit" value="Back To Home Page" >Back To Home Page SHOULD NOT BE STYLED AS BUTTON CHANGE DIS </button>
         </form>
 
 </center>

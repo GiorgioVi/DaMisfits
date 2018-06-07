@@ -97,7 +97,7 @@ def profile():
     if accttype == 'T':
         return redirect(url_for("home"))
 
-    return render_template("profile.html", username=user, isLogged = (USER_SESSION in session))
+    return render_template("profile.html", username=user, isLogged = (USER_SESSION in session), acct = accttype)
 
 
 @app.route("/home")
@@ -112,7 +112,7 @@ def home():
     if accttype == 'L':
         return redirect(url_for("attendance"))
 
-    return render_template("home.html", isLogged = (USER_SESSION in session))
+    return render_template("home.html", isLogged = (USER_SESSION in session), acct = accttype)
 
 @app.route("/attendance")
 def attendance():
@@ -129,9 +129,9 @@ def attendance():
         date = request.form["date"]
         course = request.form["course"]
 
-        return render_template("attendance.html", courses=classes, date = date, course = course, classes = classes, isLogged = (USER_SESSION in session), searched = True)
+        return render_template("attendance.html", courses=classes, date = date, course = course, classes = classes, isLogged = (USER_SESSION in session), searched = True, acct = accttype)
 
-    return render_template("attendance.html", courses=classes, isLogged = (USER_SESSION in session))
+    return render_template("attendance.html", courses=classes, isLogged = (USER_SESSION in session), acct = accttype)
 
 @app.route("/excuse")
 def excuse():
@@ -148,7 +148,7 @@ def excuse():
         reason = request.form["reason"]
 
 
-    return render_template("excuse.html", name="Giorgio Vidali", username="gvidali@stuy.edu", isLogged = (USER_SESSION in session))
+    return render_template("excuse.html", name="Giorgio Vidali", username="gvidali@stuy.edu", isLogged = (USER_SESSION in session), acct = accttype)
 
 @app.route("/class")
 def classes():
@@ -160,7 +160,7 @@ def classes():
     if accttype == 'S':
         return redirect(url_for("profile"))
 
-    return render_template("class.html", isLogged = (USER_SESSION in session))
+    return render_template("class.html", isLogged = (USER_SESSION in session), acct = accttype)
 
 @app.route("/student")
 def student():
@@ -174,7 +174,7 @@ def student():
     if accttype == 'L':
         return redirect(url_for("attendance"))
 
-    return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99", isLogged = (USER_SESSION in session))
+    return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99", isLogged = (USER_SESSION in session), acct = accttype)
 
 if __name__ == "__main__":
     d = sqlite3.connect("data/database.db")
