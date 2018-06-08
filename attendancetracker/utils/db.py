@@ -250,7 +250,6 @@ def remove_leader(coursecode, username):
 def add_student(coursecode, username, fullname):
     db = sqlite3.connect(m)
     c = db.cursor()
-    print '1'
     if does_course_exist(coursecode) and does_username_exist(username):
         # Add student to enrollment table
         print '2'
@@ -276,8 +275,6 @@ def remove_student(coursecode, username):
     print "Deleted Student Failed"
     return False
 
-
-
 # Get grade for student in class - Returns the value
 def get_grade(coursecode, username):
     db = sqlite3.connect(m)
@@ -289,9 +286,7 @@ def get_grade(coursecode, username):
             db.commit()
             db.close()
             return grade[0]
-        return True
-    print "Receive Grade Failed"
-    return False
+    return 'not yet inputted'
 
 # Changes grade for student in class - Returns true if successful or false if not
 def change_grade(coursecode, username, grade):
@@ -305,3 +300,44 @@ def change_grade(coursecode, username, grade):
         return True
     print "Changed Grade Failed"
     return False
+
+# Counts number of unexcused absences for a student
+def count_unexcused(username):
+    db = sqlite3.connect(m)
+    c = db.cursor()
+    ans = 0
+    if does_username_exist(username):
+        c.execute("SELECT type FROM attendance WHERE username = '%s' AND type = 'U';" % (username))
+        for grade in c:
+            ans += 1
+            print "Unexcused: " + str(ans)
+            db.commit()
+            db.close()
+    return ans
+
+# Counts number of excused absences for a student
+def count_excused(username):
+    db = sqlite3.connect(m)
+    c = db.cursor()
+    ans = 0
+    if does_username_exist(username):
+        c.execute("SELECT type FROM attendance WHERE username = '%s' AND type = 'E';" % (username))
+        for grade in c:
+            ans += 1
+            print "Unexcused: " + str(ans)
+            db.commit()
+            db.close()
+    return ans
+
+# Gets all the classes that a student is enrolled in
+def get_studentclass(username):
+    db = sqlite3.connect(m)
+    c = db.cursor()
+    c.execute("SELECT coursecode FROM enrollment WHERE student = '%s';" %(username))
+    classes = []
+    for course in c:
+        classes.append(course[0])
+    print "Classes Returned: " + str(classes)
+    db.commit()
+    db.close()
+    return classes

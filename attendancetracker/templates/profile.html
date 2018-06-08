@@ -8,9 +8,11 @@ Profile
 <div class="container">
   <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
     <h3><center>Welcome {{username}}!</center></h3>
-    <p>Number of Excused Absences: 3 </p>
-    <p>Number of Unexcused Absences: 3 </p>
-    <p>Current Grade in UVS11-01: 99</p><br>
+    <p>Number of Excused Absences: {{attendance[1]}}</p>
+    <p>Number of Unexcused Absences: {{attendance[0]}} </p>
+    {% for each in enrolled %}
+      <p>Current Grade in {{each}}: {{enrolled[each]}}</p><br>
+    {% endfor %}
     <p class="text-muted text-center">Register for a class</p>
     <form method = "POST" action = "/profile">
       <center>

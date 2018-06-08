@@ -10,7 +10,8 @@ Student Profile
     <form method = "GET" action ="/attendance">
       Class:
       <select>
-        {% for each in classes %}
+        <option name="course" value=""></option>
+        {% for each in courses %}
         <option name="course" value="{{each}}">{{each}}</option>
         {% endfor %}
       </select> <br>

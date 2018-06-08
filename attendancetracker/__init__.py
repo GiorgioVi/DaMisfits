@@ -113,7 +113,15 @@ def profile():
         else:
             flash("Invalid credentials for class")
 
-    return render_template("profile.html", username=user, isLogged = (USER_SESSION in session), acct = accttype)
+    unexcused = db.count_unexcused(user)
+    excused = db.count_excused(user)
+    info = [unexcused, excused]
+
+    enrolled = {}
+    for each in db.get_studentclass(user):
+        enrolled[each] = db.get_grade(each, user)
+
+    return render_template("profile.html", attendance=info, enrolled=enrolled, username=user, isLogged = (USER_SESSION in session), acct = accttype)
 
 
 @app.route("/home", methods=["GET","POST"])
@@ -248,9 +256,9 @@ if __name__ == "__main__":
     c.execute("CREATE TABLE IF NOT EXISTS classes (teacher TEXT, coursecode TEXT PRIMARY KEY, password TEXT, type TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS leaders (coursecode TEXT, leader TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS enrollment (coursecode TEXT, student TEXT, name TEXT);")
-    db.create_account('t@stuy.edu','ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', 'Teacher Demo', 'T')
-    db.create_account('l@stuy.edu','ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', 'Leader Demo', 'L')
-    db.create_account('s@stuy.edu','ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', 'Student Demo', 'S')
+    db.create_account('t@stuy.edu','a', 'Teacher Demo', 'T')
+    db.create_account('l@stuy.edu','a', 'Leader Demo', 'L')
+    db.create_account('s@stuy.edu','a', 'Student Demo', 'S')
     d.commit()
     app.debug = True
     app.run()
