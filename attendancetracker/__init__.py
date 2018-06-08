@@ -103,7 +103,7 @@ def profile():
     if accttype == 'T':
         return redirect(url_for("home"))
 
-    return render_template("profile.html", username=user, isLogged = (USER_SESSION in session))
+    return render_template("profile.html", username=user, isLogged = (USER_SESSION in session), acct = accttype)
 
 
 @app.route("/home", methods=["GET","POST"])
@@ -118,7 +118,7 @@ def home():
     if accttype == 'L':
         return redirect(url_for("attendance"))
 
-    return render_template("home.html", isLogged = (USER_SESSION in session))
+    return render_template("home.html", isLogged = (USER_SESSION in session), acct = accttype)
 
 
 @app.route("/attendance", methods=["GET","POST"])
@@ -135,14 +135,14 @@ def attendance():
     #coming back from excuse
     if request.method == "POST":
         today = str(date.today())
-        return render_template("attendance.html", date=today, course=course, courses=classes, isLogged=(USER_SESSION in session))
+        return render_template("attendance.html", date=today, course=course, courses=classes, isLogged=(USER_SESSION in session), acct = accttype)
     #search
     if request.method == "GET" and 'date' in request.args:
         date = request.args["date"]
         course = request.args["course"]
-        return render_template("attendance.html", date=date, course=course, courses=classes, isLogged=(USER_SESSION in session), searched=True)
+        return render_template("attendance.html", date=date, course=course, courses=classes, isLogged=(USER_SESSION in session), searched=True, acct = accttype)
 
-    return render_template("attendance.html", courses=classes, isLogged=(USER_SESSION in session))
+    return render_template("attendance.html", courses=classes, isLogged=(USER_SESSION in session), acct = accttype)
 
 
 @app.route("/excuse", methods=["GET","POST"])
@@ -163,7 +163,7 @@ def excuse():
         db.add_attendance(person, date, course, 'E', reason)
         return redirect(url_for("attendance"))
 
-    return render_template("excuse.html", name="Giorgio Vidali", username="gvidali@stuy.edu", isLogged = (USER_SESSION in session))
+    return render_template("excuse.html", name="Giorgio Vidali", username="gvidali@stuy.edu", isLogged = (USER_SESSION in session), acct = accttype)
 
 
 @app.route("/class", methods=["GET","POST"])
@@ -176,7 +176,7 @@ def classes():
     if accttype == 'S':
         return redirect(url_for("profile"))
 
-    return render_template("class.html", isLogged = (USER_SESSION in session))
+    return render_template("class.html", isLogged = (USER_SESSION in session), acct = accttype)
 
 
 @app.route("/student", methods=["GET","POST"])
@@ -191,7 +191,7 @@ def student():
     if accttype == 'L':
         return redirect(url_for("attendance"))
 
-    return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99", isLogged = (USER_SESSION in session))
+    return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99", isLogged = (USER_SESSION in session), acct = accttype)
 
 
 if __name__ == "__main__":

@@ -6,20 +6,20 @@ Login
 {% block body %}
 <div class="container">
   <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
-  <center>
   <div class="row">
     <div class="col-7">
 
         <h1><center>Attendance Tracker</center></h1><br>
-        <p class="text-center">This attendance tracker is designed
+        <p>This attendance tracker is designed
         for classes with lots of students (such as chorus and band). These classes
         usually have designated section leaders to help with attendance, and students'
         grades are attendance-based. This site is created to help teachers track
         attendance and to help students track their grades.</p>
-        <p class="text-muted text-center">Created by Jackie Xu, Kevin Li, Cynthia Cheng, Giorgio Vidali. Class of 2018.</p>
+        <p class="text-muted">Created by Jackie Xu, Kevin Li, Cynthia Cheng, Giorgio Vidali. Class of 2018.</p>
 
     </div>
     <div class="col-5">
+        <center>
   <h2>Login</h2> <br>
   <form method = "POST" action ="/login">
 
@@ -31,7 +31,7 @@ Login
     <label for="pass">Enter your Password</label>
     <input name="password" type="password" class="form-control" id="pass" placeholder="Enter password">
   </div>
-  <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Login">
+  <input class="btn btn-info btn-block " type="submit" name="form" value="Login">
   <br><br>
   </form>
 
