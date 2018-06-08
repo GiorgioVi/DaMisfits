@@ -14,8 +14,8 @@ def is_null(username, fullname, password, confpw):
 
 def add_session(username, password):
     if is_null(username, password, "filler", "filler"):
-            flash("Username or password is blank")
-            return False
+        flash("Username or password is blank")
+        return False
     if(db.login(username, password)):#if credentials match up in the db...
         session[USER_SESSION] = username
         return True
@@ -93,7 +93,7 @@ def create():
     return render_template("create.html", isLogged = (USER_SESSION in session))
 
 
-@app.route("/profile")
+@app.route("/profile", methods=["GET","POST"])
 def profile():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
@@ -105,18 +105,14 @@ def profile():
         return redirect(url_for("home"))
 
     if request.method == "POST":
-        print "1"
         coursecode = request.form['classcode']
         password = request.form['password']
         if db.authorize_class(coursecode, password):
             db.add_student(coursecode, user, fullname)
-            print "2"
             flash("Enrolled in class!")
         else:
-            print "3"
             flash("Invalid credentials for class")
 
-    print "4"
     return render_template("profile.html", username=user, isLogged = (USER_SESSION in session), acct = accttype)
 
 
@@ -251,10 +247,10 @@ if __name__ == "__main__":
     c.execute("CREATE TABLE IF NOT EXISTS attendance (username TEXT, day TEXT, course TEXT, type TEXT, reason TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS classes (teacher TEXT, coursecode TEXT PRIMARY KEY, password TEXT, type TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS leaders (coursecode TEXT, leader TEXT);")
-    c.execute("CREATE TABLE IF NOT EXISTS enrollment (coursecode TEXT, student TEXT);")
-    db.create_account('t@stuy.edu',db.encrypt_password('a'), 'Teacher Demo', 'T')
-    db.create_account('l@stuy.edu',db.encrypt_password('a'), 'Leader Demo', 'L')
-    db.create_account('s@stuy.edu',db.encrypt_password('a'), 'Student Demo', 'S')
+    c.execute("CREATE TABLE IF NOT EXISTS enrollment (coursecode TEXT, student TEXT, name TEXT);")
+    db.create_account('t@stuy.edu','ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', 'Teacher Demo', 'T')
+    db.create_account('l@stuy.edu','ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', 'Leader Demo', 'L')
+    db.create_account('s@stuy.edu','ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', 'Student Demo', 'S')
     d.commit()
     app.debug = True
     app.run()

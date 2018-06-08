@@ -7,7 +7,7 @@ m = DIR + "../data/database.db"
 
 # Login - Returns true if successful, false otherwise
 def login(username, password):
-    print "THIS IS M" + m
+    print "THIS IS M " + m
     db = sqlite3.connect(m)
     c = db.cursor()
     c.execute("SELECT username, password FROM profiles WHERE username = '%s';" % (username));
@@ -15,6 +15,8 @@ def login(username, password):
         user = account[0]
         passw = account[1]
         # Check if user and encrypted password match
+        print username + " " + user
+        print passw + " " + encrypt_password(password)
         if username == user and encrypt_password(password) == passw:
             print "Successful Login"
             db.commit()
@@ -139,8 +141,8 @@ def authorize_class(coursecode, password):
     c = db.cursor()
     c.execute("SELECT coursecode, password FROM classes WHERE coursecode = '%s';" % (coursecode));
     for course in c:
-        ccode = account[0]
-        passw = account[1]
+        ccode = course[0]
+        passw = course[1]
         # Check if ccode and encrypted password match
         if coursecode == ccode and encrypt_password(password) == passw:
             print "Successful Authorization Into Class"
@@ -220,7 +222,7 @@ def get_classes():
 def add_leader(coursecode, username):
     db = sqlite3.connect(m)
     c = db.cursor()
-    if not does_course_exist(coursecode) and not does_username_exist(username):
+    if does_course_exist(coursecode) and does_username_exist(username):
         # Add leader to leaders table
         c.execute("INSERT INTO leaders VALUES('%s', '%s');" % (coursecode, username))
         db.commit()
@@ -248,14 +250,16 @@ def remove_leader(coursecode, username):
 def add_student(coursecode, username, fullname):
     db = sqlite3.connect(m)
     c = db.cursor()
-    if not does_course_exist(coursecode) and not does_username_exist(username):
+    print '1'
+    if does_course_exist(coursecode) and does_username_exist(username):
         # Add student to enrollment table
+        print '2'
         c.execute("INSERT INTO enrollment VALUES('%s', '%s', '%s');" % (coursecode, username, fullname))
         db.commit()
         db.close()
-        print "Add Leader Successful"
+        print "Add Student Successful"
         return True
-    print "add Leader Failed"
+    print "Add Student Failed"
     return False
 
 # Removes student from the class - Returns true if successful or false if not
