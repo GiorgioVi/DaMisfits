@@ -223,7 +223,7 @@ def remove_leader(coursecode, username):
     c = db.cursor()
     if not does_course_exist(coursecode) and not does_username_exist(username):
         # Add leader to leaders table
-        c.execute("DELETE FROM leaders where coursecode = '%s' AND username = '%s';" % (coursecode, username))
+        c.execute("DELETE FROM leaders WHERE coursecode = '%s' AND username = '%s';" % (coursecode, username))
         db.commit()
         db.close()
         print "Deleted Leader Successful"
@@ -251,7 +251,7 @@ def remove_student(coursecode, username):
     c = db.cursor()
     if not does_course_exist(coursecode) and not does_username_exist(username):
         # Add student to enrollment table
-        c.execute("DELETE FROM enrollment where coursecode = '%s' AND username = '%s';" % (coursecode, username))
+        c.execute("DELETE FROM enrollment WHERE coursecode = '%s' AND username = '%s';" % (coursecode, username))
         db.commit()
         db.close()
         print "Deleted Student Successful"
@@ -266,7 +266,7 @@ def get_grade(coursecode, username):
     db = sqlite3.connect(m)
     c = db.cursor()
     if not does_course_exist(coursecode) and not does_username_exist(username):
-        c.execute("SELECT grade FROM profiles where coursecode = '%s' AND username = '%s';" % (coursecode, username))
+        c.execute("SELECT grade FROM profiles WHERE coursecode = '%s' AND username = '%s';" % (coursecode, username))
         for grade in c:
             print "Grade Returned: " + str(grade)
             db.commit()

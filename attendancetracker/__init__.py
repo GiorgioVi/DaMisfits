@@ -155,15 +155,22 @@ def excuse():
     if accttype == 'S':
         return redirect(url_for("profile"))
 
+    classes = db.get_classes()
     if request.method == "POST":
         date = request.form["date"]
         reason = request.form["reason"]
         person = request.form["name"]
         course = request.args["course"]
         db.add_attendance(person, date, course, 'E', reason)
-        return redirect(url_for("attendance"))
+    if request.method == "GET" and 'course' in request.args:
+        course = request.args["course"]
+        if not 'student' in request.args:
+            students = db.get_students(course)
+            return render_template("excuse.html", students=students, course=course, courses=classes, isLogged=(USER_SESSION in session), acct = accttype)
+        else:
+            return render_template("excuse.html", course=course, courses=classes, isLogged=(USER_SESSION in session), searched=True, acct = accttype)
 
-    return render_template("excuse.html", name="Giorgio Vidali", username="gvidali@stuy.edu", isLogged = (USER_SESSION in session), acct = accttype)
+    return render_template("excuse.html", courses=classes, isLogged = (USER_SESSION in session), acct = accttype)
 
 
 @app.route("/class", methods=["GET","POST"])
@@ -190,6 +197,20 @@ def student():
         return redirect(url_for("profile"))
     if accttype == 'L':
         return redirect(url_for("attendance"))
+
+    classes = db.get_classes()
+    if request.method == "POST":
+        grade = request.form["grade"]
+        person = request.form["name"]
+        course = request.args["course"]
+        db.add_grade(course, person, grade)
+    if request.method == "GET" and 'course' in request.args:
+        course = request.args["course"]
+        if not 'student' in request.args:
+            students = db.get_students(course)
+            return render_template("student.html", students=students, course=course, courses=classes, isLogged=(USER_SESSION in session), acct = accttype)
+        else:
+            return render_template("student.html", course=course, courses=classes, isLogged=(USER_SESSION in session), searched=True, acct = accttype)
 
     return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99", isLogged = (USER_SESSION in session), acct = accttype)
 

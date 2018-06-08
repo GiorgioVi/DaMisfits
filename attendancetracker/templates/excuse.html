@@ -6,6 +6,25 @@ Profile
 {% block body %}
 <div class="container">
   <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
+
+    <form method = "GET" action ="/excuse">
+      Class:
+      <select>
+        {% for each in classes %}
+        <option name="course" value="{{each}}">{{each}}</option>
+        {% endfor %}
+      </select><br>
+      Student:
+      <select>
+        {% for each in students %}
+        <option name="student" value="{{each}}">{{each}}</option>
+        {% endfor %}
+      </select>
+      <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Submit">
+      <br><br>
+    </form>
+
+    {% if searched %}
     <h1><center>Excuse Absence for {{name}}</center></h1>
     <p class="text-muted text-center">{{username}}</p>
 
@@ -19,6 +38,11 @@ Profile
         <br><br>
       </form>
     </center>
+    {% endif %}
+
+    <form style="text-align: center;" method="get" action="/attendance">
+      <button class="btn btn-default" type="submit" style="background-color: lightblue;" value="Back To Home Page" >Back To Attendance </button>
+    </form>
 
   </div>
 </div>
