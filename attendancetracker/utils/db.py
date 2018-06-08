@@ -81,7 +81,7 @@ def get_classtype(coursecode):
     if not does_course_exist(coursecode):
         c.execute("SELECT type FROM classes WHERE coursecode = '%s';" % (coursecode))
         for course in c:
-            print "Class Type Returned: " + course
+            print "Class Type Returned: " + str(course)
             db.commit()
             db.close()
             return course[0]
@@ -97,7 +97,7 @@ def get_leaders(coursecode):
         leaders = []
         for course in c:
             leaders.append(course)
-        print "Leaders Returned: " + leaders
+        print "Leaders Returned: " + str(leaders)
         db.commit()
         db.close()
         return leaders
@@ -113,7 +113,7 @@ def get_students(coursecode):
         students = []
         for student in c:
             students.append(student)
-        print "Students Returned: " + students
+        print "Students Returned: " + str(students)
         db.commit()
         db.close()
         return students
@@ -140,21 +140,24 @@ def authorize_class(coursecode, password):
     return False
 
 # Adds unexcused attendance if DNE, else excuses with reason
-def add_attendance(username, day, type, reason):
+def add_attendance(username, course, day, type, reason):
     db = sqlite3.connect(m)
     c = db.cursor()
-    c.execute("SELECT type, reason FROM attendance WHERE username = '%s' AND day = '%s';" % (username, day))
-    for attendance in c:
-        # attendance exists
-        c.execute("UPDATE attendance SET type = 'E', reason = '%s';" % (reason))
+
+    if type == 'E':
+        c.execute("UPDATE attendance SET type = 'E', reason = '%s' WHERE username = '%s' AND day = '%s' AND course = '%s';" % (reason, username, day, course))
         print "Attendance updated to excused"
         db.commit()
         db.close()
         return True
-    c.execute("INSERT INTO attendance VALUES('%s', '%s', 'U');" % (username, day))
-    print "Attendance added"
-    db.commit()
-    db.close()
+    else:
+        c.execute("INSERT INTO attendance VALUES('%s', '%s', '%s', 'U');" % (username, day, course))
+        print "Attendance added"
+        db.commit()
+        db.close()
+        return True
+
+    print "Attendance didn't work"
     return False
 
 # Returns whether or not the class exists
@@ -188,14 +191,14 @@ def create_class(teacher, coursecode, password, type):
     return False
 
 # Gets all the available classes
-def get_classes(teacher):
+def get_classes():
     db = sqlite3.connect(m)
     c = db.cursor()
     c.execute("SELECT * FROM classes;")
     classes = []
     for course in c:
         classes.append(course)
-    print "Classes Returned: " + classes
+    print "Classes Returned: " + str(classes)
     db.commit()
     db.close()
     return classes
@@ -265,7 +268,7 @@ def get_grade(coursecode, username):
     if not does_course_exist(coursecode) and not does_username_exist(username):
         c.execute("SELECT grade FROM profiles where coursecode = '%s' AND username = '%s';" % (coursecode, username))
         for grade in c:
-            print "Grade Returned: " + grade
+            print "Grade Returned: " + str(grade)
             db.commit()
             db.close()
             return grade[0]
@@ -291,7 +294,7 @@ if __name__ == '__main__':
     db = sqlite3.connect(m)
     c = db.cursor()
     c.execute("CREATE TABLE IF NOT EXISTS profiles (username TEXT PRIMARY KEY, password TEXT, fullname TEXT, account TEXT);")
-    c.execute("CREATE TABLE IF NOT EXISTS attendance (username TEXT, day TEXT, type TEXT, reason TEXT);")
+    c.execute("CREATE TABLE IF NOT EXISTS attendance (username TEXT, day TEXT, course TEXT, type TEXT, reason TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS classes (teacher TEXT, coursecode TEXT PRIMARY KEY, password, TEXT, type TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS leaders (coursecode TEXT, leader TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS enrollment (coursecode TEXT, student TEXT, name TEXT, grade INT);")

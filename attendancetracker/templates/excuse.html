@@ -7,24 +7,20 @@ Profile
 <div class="container">
   <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
     <h1><center>Excuse Absence for {{name}}</center></h1>
-  <p class="text-muted text-center">{{username}}</p>
+    <p class="text-muted text-center">{{username}}</p>
 
-  <center>
-  <form method = "POST" action ="/excuse">
-
-  Date: <br>
-  <input type="date" name="date" required><br><br>
-
-  Reason: <br>
-  <input type="text" name="reason" required><br><br>
-
-  <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Submit">
-  <br> <br>
+    <center>
+      <form method = "POST" action ="/excuse">
+        Date: <br>
+        <input type="date" name="date" required><br><br>
+        Reason: <br>
+        <input type="text" name="reason" required><br><br>
+        <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Submit">
+        <br><br>
       </form>
+    </center>
 
-</center>
   </div>
 </div>
-
-  <br><br>
+<br><br>
 {% endblock %}

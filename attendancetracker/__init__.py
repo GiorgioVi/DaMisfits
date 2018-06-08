@@ -1,6 +1,8 @@
 from flask import Flask, render_template, redirect, url_for, session, request, flash, Markup
 import os, sqlite3, datetime, calendar
 from utils import api, db
+from datetime import date
+
 
 USER_SESSION = "logged_in"
 
@@ -25,6 +27,7 @@ def add_session(username, password):
 def root():
     return redirect(url_for("login"))
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if USER_SESSION in session:
@@ -44,11 +47,13 @@ def login():
             return redirect(url_for("root"))
     return render_template("login.html", isLogged = (USER_SESSION in session))
 
+
 @app.route("/logout")
 def logout():
     if USER_SESSION in session:
 		session.pop(USER_SESSION)
     return redirect(url_for("login"))
+
 
 @app.route("/create", methods=["GET", "POST"])
 def create():
@@ -87,6 +92,7 @@ def create():
 
     return render_template("create.html", isLogged = (USER_SESSION in session))
 
+
 @app.route("/profile")
 def profile():
     if not USER_SESSION in session:
@@ -100,7 +106,7 @@ def profile():
     return render_template("profile.html", username=user, isLogged = (USER_SESSION in session))
 
 
-@app.route("/home")
+@app.route("/home", methods=["GET","POST"])
 def home():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
@@ -114,7 +120,8 @@ def home():
 
     return render_template("home.html", isLogged = (USER_SESSION in session))
 
-@app.route("/attendance")
+
+@app.route("/attendance", methods=["GET","POST"])
 def attendance():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
@@ -125,15 +132,20 @@ def attendance():
         return redirect(url_for("profile"))
 
     classes = db.get_classes()
+    #coming back from excuse
     if request.method == "POST":
-        date = request.form["date"]
-        course = request.form["course"]
+        today = str(date.today())
+        return render_template("attendance.html", date=today, course=course, courses=classes, isLogged=(USER_SESSION in session))
+    #search
+    if request.method == "GET" and 'date' in request.args:
+        date = request.args["date"]
+        course = request.args["course"]
+        return render_template("attendance.html", date=date, course=course, courses=classes, isLogged=(USER_SESSION in session), searched=True)
 
-        return render_template("attendance.html", courses=classes, date = date, course = course, classes = classes, isLogged = (USER_SESSION in session), searched = True)
+    return render_template("attendance.html", courses=classes, isLogged=(USER_SESSION in session))
 
-    return render_template("attendance.html", courses=classes, isLogged = (USER_SESSION in session))
 
-@app.route("/excuse")
+@app.route("/excuse", methods=["GET","POST"])
 def excuse():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
@@ -146,11 +158,15 @@ def excuse():
     if request.method == "POST":
         date = request.form["date"]
         reason = request.form["reason"]
-
+        person = request.form["name"]
+        course = request.args["course"]
+        db.add_attendance(person, date, course, 'E', reason)
+        return redirect(url_for("attendance"))
 
     return render_template("excuse.html", name="Giorgio Vidali", username="gvidali@stuy.edu", isLogged = (USER_SESSION in session))
 
-@app.route("/class")
+
+@app.route("/class", methods=["GET","POST"])
 def classes():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
@@ -162,7 +178,8 @@ def classes():
 
     return render_template("class.html", isLogged = (USER_SESSION in session))
 
-@app.route("/student")
+
+@app.route("/student", methods=["GET","POST"])
 def student():
     if not USER_SESSION in session:
         return redirect(url_for("login"))
@@ -176,11 +193,12 @@ def student():
 
     return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99", isLogged = (USER_SESSION in session))
 
+
 if __name__ == "__main__":
     d = sqlite3.connect("data/database.db")
     c = d.cursor()
     c.execute("CREATE TABLE IF NOT EXISTS profiles (username TEXT PRIMARY KEY, password TEXT, fullname TEXT, account TEXT);")
-    c.execute("CREATE TABLE IF NOT EXISTS attendance (username TEXT, day TEXT, type TEXT, reason TEXT);")
+    c.execute("CREATE TABLE IF NOT EXISTS attendance (username TEXT, day TEXT, course TEXT, type TEXT, reason TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS classes (teacher TEXT, coursecode TEXT PRIMARY KEY, password, TEXT, type TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS leaders (coursecode TEXT, leader TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS enrollment (coursecode TEXT, student TEXT);")
