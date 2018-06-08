@@ -58,3 +58,6 @@ kevinL -- 2018-06-07 18:04:55
 
 jackieX -- 2018-06-08 09:47:11
   halfway done with data transfer between sqlite and html
+
+cynthiaC -- 2018-06-08 14:21:38
+	integrated calendar stuff
