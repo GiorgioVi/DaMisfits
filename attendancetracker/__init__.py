@@ -80,13 +80,13 @@ def create():
             flash("A field was left empty")
         elif password != confirm_password:
             flash("Password and password confirmation do not match")
-        elif not db.create_account(username, password, fullname, accttype):
-            flash("Username taken")
         elif accttype == 'T':
             if admin_password == "":
                 flash("To create a teacher account, please enter admin password")
             elif admin_password and db.encrypt_password(admin_password) != 'ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb':
                 flash("Admin password is incorrect")
+        elif not db.create_account(username, password, fullname, accttype):
+            flash("Username taken")
         else:
             return redirect(url_for("login"))
 
@@ -100,9 +100,23 @@ def profile():
 
     user = session[USER_SESSION]
     accttype = db.get_account(user)
+    fullname = db.get_name(user)
     if accttype == 'T':
         return redirect(url_for("home"))
 
+    if request.method == "POST":
+        print "1"
+        coursecode = request.form['classcode']
+        password = request.form['password']
+        if db.authorize_class(coursecode, password):
+            db.add_student(coursecode, user, fullname)
+            print "2"
+            flash("Enrolled in class!")
+        else:
+            print "3"
+            flash("Invalid credentials for class")
+
+    print "4"
     return render_template("profile.html", username=user, isLogged = (USER_SESSION in session), acct = accttype)
 
 
@@ -183,6 +197,21 @@ def classes():
     if accttype == 'S':
         return redirect(url_for("profile"))
 
+    if request.method == "POST":
+        code = request.form["newCode"]
+        password = request.form["newPassword"]
+        confirm_password = request.form["repeatPassword"]
+        classtype = request.form["accttype"]
+        if '-' not in code:
+            flash("Code must include section")
+        elif is_null(code, classtype, password, confirm_password):
+            flash("A field was left empty")
+        elif password != confirm_password:
+            flash("Password and password confirmation do not match")
+        elif not db.create_class(user, code, password, classtype):
+            flash("Course code taken")
+        flash("Course Created!")
+
     return render_template("class.html", isLogged = (USER_SESSION in session), acct = accttype)
 
 
@@ -220,9 +249,12 @@ if __name__ == "__main__":
     c = d.cursor()
     c.execute("CREATE TABLE IF NOT EXISTS profiles (username TEXT PRIMARY KEY, password TEXT, fullname TEXT, account TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS attendance (username TEXT, day TEXT, course TEXT, type TEXT, reason TEXT);")
-    c.execute("CREATE TABLE IF NOT EXISTS classes (teacher TEXT, coursecode TEXT PRIMARY KEY, password, TEXT, type TEXT);")
+    c.execute("CREATE TABLE IF NOT EXISTS classes (teacher TEXT, coursecode TEXT PRIMARY KEY, password TEXT, type TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS leaders (coursecode TEXT, leader TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS enrollment (coursecode TEXT, student TEXT);")
+    db.create_account('t@stuy.edu',db.encrypt_password('a'), 'Teacher Demo', 'T')
+    db.create_account('l@stuy.edu',db.encrypt_password('a'), 'Leader Demo', 'L')
+    db.create_account('s@stuy.edu',db.encrypt_password('a'), 'Student Demo', 'S')
     d.commit()
     app.debug = True
     app.run()

@@ -74,6 +74,19 @@ def get_account(username):
     print "Username does not exist"
     return False
 
+# Returns full name of a specific user - else returns False if failed
+def get_name(username):
+    db = sqlite3.connect(m)
+    c = db.cursor()
+    if does_username_exist(username):
+        c.execute("SELECT fullname FROM profiles WHERE username = '%s';" % (username))
+        for account in c:
+            db.commit()
+            db.close()
+            return account[0]
+    print "Username does not exist"
+    return False
+
 # Returns class type of a specific course - else Returns False if failed
 def get_classtype(coursecode):
     db = sqlite3.connect(m)
@@ -161,7 +174,7 @@ def add_attendance(username, course, day, type, reason):
     return False
 
 # Returns whether or not the class exists
-def does_class_exit(coursecode):
+def does_course_exist(coursecode):
     db = sqlite3.connect(m)
     c = db.cursor()
     c.execute("SELECT coursecode FROM classes WHERE coursecode = '%s';" % (coursecode))
@@ -194,10 +207,10 @@ def create_class(teacher, coursecode, password, type):
 def get_classes():
     db = sqlite3.connect(m)
     c = db.cursor()
-    c.execute("SELECT * FROM classes;")
+    c.execute("SELECT coursecode FROM classes;")
     classes = []
     for course in c:
-        classes.append(course)
+        classes.append(course[0])
     print "Classes Returned: " + str(classes)
     db.commit()
     db.close()
@@ -288,18 +301,3 @@ def change_grade(coursecode, username, grade):
         return True
     print "Changed Grade Failed"
     return False
-
-if __name__ == '__main__':
-    m = "../data/database.db"
-    db = sqlite3.connect(m)
-    c = db.cursor()
-    c.execute("CREATE TABLE IF NOT EXISTS profiles (username TEXT PRIMARY KEY, password TEXT, fullname TEXT, account TEXT);")
-    c.execute("CREATE TABLE IF NOT EXISTS attendance (username TEXT, day TEXT, course TEXT, type TEXT, reason TEXT);")
-    c.execute("CREATE TABLE IF NOT EXISTS classes (teacher TEXT, coursecode TEXT PRIMARY KEY, password, TEXT, type TEXT);")
-    c.execute("CREATE TABLE IF NOT EXISTS leaders (coursecode TEXT, leader TEXT);")
-    c.execute("CREATE TABLE IF NOT EXISTS enrollment (coursecode TEXT, student TEXT, name TEXT, grade INT);")
-    db.commit()
-    create_account("jxu10@stuy.edu", "ibm135")
-    create_account("gvidali@stuy.edu", "shrek")
-    create_account("kli16@stuy.edu", "p455w0rd3")
-    db.close()
