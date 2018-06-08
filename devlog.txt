@@ -64,3 +64,6 @@ cynthiaC -- 2018-06-08 14:21:38
 
 jackieX -- 2018-06-08 16:53:15
 	class route working, profile in the works
+
+jackieX -- 2018-06-08 18:08:21
+	profile route is done
