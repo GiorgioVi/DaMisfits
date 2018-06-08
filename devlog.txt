@@ -67,3 +67,6 @@ jackieX -- 2018-06-08 16:53:15
 
 jackieX -- 2018-06-08 18:08:21
 	profile route is done
+
+jackieX -- 2018-06-08 19:00:10
+	attendance working except keeping presence

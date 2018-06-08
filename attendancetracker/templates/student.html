@@ -9,10 +9,10 @@ Registration
 
     <form method = "GET" action ="/excuse">
       Class:
-      <select>
-        <option name="course" value=""></option>
+      <select name="course">
+        <option value=""></option>
         {% for each in classes %}
-          <option name="course" value="{{each}}">{{each}}</option>
+          <option value="{{each}}">{{each}}</option>
         {% endfor %}
       </select><br>
       Student:

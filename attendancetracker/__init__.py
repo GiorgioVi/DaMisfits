@@ -152,13 +152,20 @@ def attendance():
     classes = db.get_classes()
     #coming back from excuse
     if request.method == "POST":
-        today = str(date.today())
-        return render_template("attendance.html", date=today, course=course, courses=classes, isLogged=(USER_SESSION in session), acct = accttype)
+        #today = str(date.today())
+        print 'request.form'
+        print request.form
+
     #search
     if request.method == "GET" and 'date' in request.args:
-        date = request.args["date"]
-        course = request.args["course"]
-        return render_template("attendance.html", date=date, course=course, courses=classes, isLogged=(USER_SESSION in session), searched=True, acct = accttype)
+        date = request.args.get("date")
+        course = request.args.get("course")
+        enrolled = db.get_students(course)
+        students = {}
+        for each in enrolled:
+            students[each] = [db.get_name(each), db.student_present(each, date, course)]
+
+        return render_template("attendance.html", date=date, students=students, course=course, courses=classes, isLogged=(USER_SESSION in session), searched=True, acct = accttype)
 
     return render_template("attendance.html", courses=classes, isLogged=(USER_SESSION in session), acct = accttype)
 
@@ -178,10 +185,10 @@ def excuse():
         date = request.form["date"]
         reason = request.form["reason"]
         person = request.form["name"]
-        course = request.args["course"]
+        course = request.args.get("course")
         db.add_attendance(person, date, course, 'E', reason)
     if request.method == "GET" and 'course' in request.args:
-        course = request.args["course"]
+        course = request.args.get("course")
         if not 'student' in request.args:
             students = db.get_students(course)
             return render_template("excuse.html", students=students, course=course, courses=classes, isLogged=(USER_SESSION in session), acct = accttype)
@@ -235,10 +242,10 @@ def student():
     if request.method == "POST":
         grade = request.form["grade"]
         person = request.form["name"]
-        course = request.args["course"]
+        course = request.args.get("course")
         db.add_grade(course, person, grade)
     if request.method == "GET" and 'course' in request.args:
-        course = request.args["course"]
+        course = request.args.get("course")
         if not 'student' in request.args:
             students = db.get_students(course)
             return render_template("student.html", students=students, course=course, courses=classes, isLogged=(USER_SESSION in session), acct = accttype)
