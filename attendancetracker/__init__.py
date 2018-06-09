@@ -121,7 +121,7 @@ def profile():
     for each in db.get_studentclass(user):
         enrolled[each] = db.get_grade(each, user)
 
-    return render_template("profile.html", attendance=info, enrolled=enrolled, username=user, isLogged = (USER_SESSION in session), acct = accttype)
+    return render_template("profile.html", attendance=info, enrolled=enrolled, username=user, fullname=fullname, isLogged = (USER_SESSION in session), acct = accttype)
 
 
 @app.route("/home", methods=["GET","POST"])

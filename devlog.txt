@@ -70,3 +70,6 @@ jackieX -- 2018-06-08 18:08:21
 
 jackieX -- 2018-06-08 19:00:10
 	attendance working except keeping presence
+
+kevinL -- 2018-06-09 16:18:06
+	Fixed create acc error and the html for forms

@@ -7,27 +7,46 @@ Profile
 <script src="calendar.js"></script>
 <div class="container">
   <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
-    <h3><center>Welcome {{username}}!</center></h3>
-    <p>Number of Excused Absences: {{attendance[1]}}</p>
-    <p>Number of Unexcused Absences: {{attendance[0]}} </p>
-    {% for each in enrolled %}
-      <p>Current Grade in {{each}}: {{enrolled[each]}}</p><br>
-    {% endfor %}
-    <p class="text-muted text-center">Register for a class</p>
-    <form method = "POST" action = "/profile">
-      <center>
-        Enter your classcode and section:<br>
-        <input type="text" name="classcode" required><br><br>
+    <div class="row">
+      <div class="col">
+        <center> <h3>Welcome, {{fullname}}!</h3> </center>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-8">
+        <div id="calendar"></div>
+      </div>
+      <div class="col-4">
+        <div class="card infobox">
+        <p>Excused Absences: {{attendance[1]}}</p>
+        <p>Unexcused Absences: {{attendance[0]}} </p>
+        {% for each in enrolled %}
+          <p>Current Grade in {{each}}: {{enrolled[each]}}</p><br>
+        {% endfor %}
+        </div>
 
-        Enter the class password (provided by teacher): <br>
-        <input type="password" name="password" required><br><br>
+    <br>
 
-        <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Submit">
-        <br> <br>
-      </center>
+    <!-- FORM -->
+    <h4>Register for a Class</h4>
+    <form method = "POST" action ="/profile">
+
+    <div class="form-group">
+      <input name="classcode" type="text" class="form-control" id="classcode" placeholder="Enter classcode and section" required>
+    </div>
+    <div class="form-group">
+      <input name="password" type="password" class="form-control" id="pass" placeholder="Enter class password (provided by teacher)" required>
+    </div>
+    <input class="btn btn-info btn-block " type="submit" name="form" value="Submit">
+    <br><br>
     </form>
-    <div id="calendar"></div>
+
   </div>
+
+
+  </div>
+</div>
 </div>
 
   <br><br>
