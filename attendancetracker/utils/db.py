@@ -253,7 +253,7 @@ def add_student(coursecode, username, fullname):
     if does_course_exist(coursecode) and does_username_exist(username):
         # Add student to enrollment table
         print '2'
-        c.execute("INSERT INTO enrollment VALUES('%s', '%s', '%s');" % (coursecode, username, fullname))
+        c.execute("INSERT INTO enrollment VALUES('%s', '%s', '%s', NULL);" % (coursecode, username, fullname))
         db.commit()
         db.close()
         print "Add Student Successful"
@@ -280,7 +280,7 @@ def get_grade(coursecode, username):
     db = sqlite3.connect(m)
     c = db.cursor()
     if not does_course_exist(coursecode) and not does_username_exist(username):
-        c.execute("SELECT grade FROM profiles WHERE coursecode = '%s' AND username = '%s';" % (coursecode, username))
+        c.execute("SELECT grade FROM enrollment WHERE coursecode = '%s' AND username = '%s';" % (coursecode, username))
         for grade in c:
             print "Grade Returned: " + str(grade)
             db.commit()
@@ -293,7 +293,7 @@ def change_grade(coursecode, username, grade):
     db = sqlite3.connect(m)
     c = db.cursor()
     if not does_course_exist(coursecode) and not does_username_exist(username):
-        c.execute("UPDATE profiles SET grade=%d WHERE username='%s' AND coursecode='%s';" % (grade, username, coursecode))
+        c.execute("UPDATE enrollment SET grade=%d WHERE username='%s' AND coursecode='%s';" % (grade, username, coursecode))
         db.commit()
         db.close()
         print "Changed Grade Successful"

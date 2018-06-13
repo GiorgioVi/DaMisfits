@@ -263,6 +263,8 @@ def classes():
 
 @app.route("/student", methods=["GET","POST"])
 def student():
+    global stu_course
+    global stu_name
     if not USER_SESSION in session:
         return redirect(url_for("login"))
 
@@ -276,7 +278,8 @@ def student():
     classes = db.get_classes()
     if request.method == "POST":
         grade = request.form["grade"]
-        db.add_grade(stu_course, stu_student, grade)
+        db.change_grade(stu_course, stu_name, grade)
+        flash("Updated grade for " + stu_name)
     if request.method == "GET" and 'course' in request.args:
         stu_course = request.args.get("course")
         students = db.get_students(stu_course)
@@ -286,7 +289,7 @@ def student():
         stu_name = request.args.get('student')
         return render_template("student.html", name=db.get_name(stu_name), user=stu_name, course=stu_course, courses=classes, isLogged=(USER_SESSION in session), searched=True, acct = accttype)
 
-    return render_template("student.html", isLogged = (USER_SESSION in session), acct = accttype)
+    return render_template("student.html", courses=classes, isLogged = (USER_SESSION in session), acct = accttype)
 
 
 if __name__ == "__main__":
@@ -297,7 +300,7 @@ if __name__ == "__main__":
     c.execute("CREATE TABLE IF NOT EXISTS attendance (username TEXT, day TEXT, course TEXT, type TEXT, reason TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS classes (teacher TEXT, coursecode TEXT PRIMARY KEY, password TEXT, type TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS leaders (coursecode TEXT, leader TEXT);")
-    c.execute("CREATE TABLE IF NOT EXISTS enrollment (coursecode TEXT, student TEXT, name TEXT);")
+    c.execute("CREATE TABLE IF NOT EXISTS enrollment (coursecode TEXT, student TEXT, name TEXT, grade INT);")
     db.create_account('t@stuy.edu','a', 'Teacher Demo', 'T')
     db.create_account('l@stuy.edu','a', 'Leader Demo', 'L')
     db.create_account('s@stuy.edu','a', 'Student Demo', 'S')

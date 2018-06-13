@@ -9,7 +9,7 @@ Registration
 
     <form method = "GET" action ="/student">
       Class:
-      <select name="course">
+      <select name="course" required>
         <option value=""></option>
         {% for each in courses %}
           <option value="{{each}}">{{each}}</option>
@@ -19,7 +19,7 @@ Registration
     </form>
     <form method = "GET" action ="/student">
       Student:
-      <select name='student'>
+      <select name='student' required>
         {% for each in students %}
         <option value="{{each}}">{{each}}</option>
         {% endfor %}
@@ -31,7 +31,7 @@ Registration
     {% if searched %}
     <h1><center>{{name}}</center></h1>
     <p class="text-muted text-center">{{user}}</p>
-	  <form method = "GET" action = "/register">
+	  <form method = "POST" action = "/student">
       <center>
         Number of Excused Absences: 3 <br>
         Number of Unexcused Absences: 3 <br>
@@ -39,7 +39,7 @@ Registration
         Grade:
         <input type="text" name="grade" value="{{grade}}"required><br>
 
-        <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Submit">
+        <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Submit"><br><br>
         <div id="calendar"></div>
       </form>
     </form>
