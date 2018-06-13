@@ -15,10 +15,10 @@ def is_null(username, fullname, password, confpw):
     return username == "" or fullname == "" or password == "" or confpw == ""
 
 def add_session(username, password):
-    if is_null(username, password, "filler", "filler"):
+    if is_null(username.lower(), password, "filler", "filler"):
         flash("Username or password is blank")
         return False
-    if(db.login(username, password)):#if credentials match up in the db...
+    if(db.login(username.lower(), password)):#if credentials match up in the db...
         session[USER_SESSION] = username
         return True
     else:
@@ -43,7 +43,7 @@ def login():
     elif (request.method == "GET"):
         return render_template("login.html", isLogged = (USER_SESSION in session))
     else:
-        username = request.form["username"]
+        username = request.form["username"].lower()
         password = request.form["password"]
         if add_session(username, password):
             return redirect(url_for("root"))
@@ -69,7 +69,7 @@ def create():
         return redirect(url_for("home"))
 
     if request.method == "POST":
-        username = request.form["username"]
+        username = request.form["username"].lower()
         fullname = request.form["fullname"]
         accttype = request.form["accttype"]
         password = request.form["password"]
@@ -137,6 +137,19 @@ def home():
         return redirect(url_for("profile"))
     if accttype == 'L':
         return redirect(url_for("attendance"))
+
+    if request.method == "POST":
+        coursecode = request.form['coursecode']
+        username = request.form['student']
+        if not db.does_username_exist(username):
+            flash(" Username does not exist")
+        if username in db.get_leaders(coursecode):
+            flask(username + " is already a leader for this class")
+        if not username in db.get_students(coursecode):
+            flash(username + " is not yet enrolled in the class")
+        else:
+            db.add_leader(coursecode, username)
+            flash(username + " added as leader for " + coursecode)
 
     return render_template("home.html", isLogged = (USER_SESSION in session), acct = accttype)
 
