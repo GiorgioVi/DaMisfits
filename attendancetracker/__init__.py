@@ -184,7 +184,7 @@ def attendance():
                 if not db.check_attendance(each, att_course, att_date):
                     print "removing attendance"
                     db.delete_attendance(each, att_course, att_date)
-        flash("Attendance saved!")
+
     #search
     if request.method == "GET" and 'date' in request.args:
         att_date = request.args.get("date")
@@ -288,7 +288,7 @@ def student():
     if request.method == "GET" and 'student' in request.args:
         print 'yes'
         stu_name = request.args.get('student')
-        return render_template("student.html", name=db.get_name(stu_name), user=stu_name, course=stu_course, courses=classes, isLogged=(USER_SESSION in session), searched=True, acct = accttype)
+        return render_template("student.html", name=db.get_name(stu_name), grade=db.get_grade(stu_course, stu_name), user=stu_name, course=stu_course, courses=classes, isLogged=(USER_SESSION in session), searched=True, acct = accttype)
 
     return render_template("student.html", courses=classes, isLogged = (USER_SESSION in session), acct = accttype)
 
