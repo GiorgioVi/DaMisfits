@@ -174,12 +174,12 @@ def attendance():
         for each in request.form:
             if each.endswith('@stuy.edu') and request.form[each] == 'A':
                 print "absent"
-                if not db.check_attendance(each, att_course, att_date):
+                if db.check_attendance(each, att_course, att_date):
                     print "absent 1"
                     db.add_attendance(each, att_course, att_date, 'U', '')
             if each.endswith('@stuy.edu') and request.form[each] == 'P':
                 print "present"
-                if db.check_attendance(each, att_course, att_date):
+                if not db.check_attendance(each, att_course, att_date):
                     print "removing attendance"
                     db.delete_attendance(each, att_course, att_date)
 
