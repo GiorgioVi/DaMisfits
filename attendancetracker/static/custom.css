@@ -69,9 +69,10 @@ a{
  color: blue;
  text-align: center;
 }
-.dayNow{
+.absent{
+ background-color: #FF0000;
  border: 2px solid black;
- color: #FF0000;
+ color: black;
  text-align: center;
 }
 .calendar td{
@@ -84,7 +85,7 @@ a{
  text-align: center;
 }
 .dayNames{
- background: #0FF000;
+ background: #ADD8E6;
  color: #FFFFFF;
  text-align: center;
 }

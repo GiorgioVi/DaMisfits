@@ -10,12 +10,9 @@ function displayCalendar(){
   //var d = new Date("July 21, 1983 01:15:00");
 
   if (month > 7){
-    console.log("ova 7");
-    console.log(yearStrings[0]);
     var yearStrings = [ "September 1, " + year.toString() + " 01:15:00" , "October 1, " + year.toString() + " 01:15:00" , "November 1, " + year.toString() + " 01:15:00" , "December 1, " + year.toString() + " 01:15:00" , "January 1, " + (year+1).toString() + " 01:15:00" , "February 1, " + (year+1).toString() + " 01:15:00" , "March 1, " + (year+1).toString() + " 01:15:00" , "April 1, " + (year+1).toString() + " 01:15:00" , "May 1, " + (year+1).toString() + " 01:15:00" , "June 1, " + (year+1).toString() + " 01:15:00"];
   }
   else {
-    console.log("unda 7");
     var yearStrings = [ "September 1, " + (year-1).toString() + " 01:15:00" , "October 1, " + (year-1).toString() + " 01:15:00" , "November 1, " + (year-1).toString() + " 01:15:00" , "December 1, " + (year-1).toString() + " 01:15:00" , "January 1, " + year.toString() + " 01:15:00" , "February 1, " + year.toString() + " 01:15:00" , "March 1, " + year.toString() + " 01:15:00" , "April 1, " + year.toString() + " 01:15:00" , "May 1, " + year.toString() + " 01:15:00" , "June 1, " + year.toString() + " 01:15:00" ];
 }
   var calendarBody = "";
@@ -24,6 +21,10 @@ function displayCalendar(){
     calendarBody += displayMonth(yearStrings[i]);
   }
   document.getElementById("calendar").innerHTML=calendarBody;
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function displayMonth(s){
@@ -93,14 +94,14 @@ function displayMonth(s){
 
     // if counter is current day.
     // highlight current day using the CSS defined in header.
-    if (counter == day){
-        htmlContent +="<td class='dayNow'  onMouseOver='this.style.background=\"##787878\"; this.style.color=\"#FFFFFF\"' "+
-        "onMouseOut='this.style.background=\"#FFFFFF\"; this.style.color=\"##787878\"'>"+counter+"</td>";
+    if (counter == getRandomInt(1,31)){
+      htmlContent +="<td class='absent'  onMouseOver='this.style.background=\"#99ccff\"; this.style.color=\"#FFFFFF\"' "+ "onMouseOut='this.style.background=\"#FF0000\"; this.style.color=\"blue\"'>"+counter+"</td>";
     }else{
-        htmlContent +="<td class='monthNow' onMouseOver='this.style.background=\"##787878\"'"+
+        htmlContent +="<td class='monthNow' onMouseOver='this.style.background=\"#99ccff\"'"+
         " onMouseOut='this.style.background=\"#FFFFFF\"'>"+counter+"</td>";
 
     }
+
 
     weekdays2++;
     counter++;
