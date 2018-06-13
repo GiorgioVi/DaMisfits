@@ -363,7 +363,7 @@ def check_attendance(username, date, course):
         for account in c:
             db.commit()
             db.close()
-            print "Absence recoded"
+            print "Absence recorded"
             return False
     print "No absence recorded"
     return True

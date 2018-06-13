@@ -216,9 +216,9 @@ def excuse():
     if request.method == "POST":
         date = request.form["date"]
         reason = request.form["reason"]
-        if db.check_attendance(stu_name, date, stu_course):
+        if not db.check_attendance(stu_name, date, stu_course):
             flash('Excused absence for ' + stu_name)
-            db.add_attendance(stu_name, date, stu_course, 'E', reason)
+            db.add_attendance(stu_name, stu_course, date, 'E', reason)
         else:
             flash('There is nothing to excuse on ' + date + ' for ' + stu_name)
     if request.method == "GET" and 'course' in request.args:
