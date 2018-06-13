@@ -278,7 +278,7 @@ def student():
     classes = db.get_classes()
     if request.method == "POST":
         grade = request.form["grade"]
-        db.change_grade(stu_course, stu_name, grade)
+        db.change_grade(stu_course, stu_name, int(grade))
         flash("Updated grade for " + stu_name)
     if request.method == "GET" and 'course' in request.args:
         stu_course = request.args.get("course")
