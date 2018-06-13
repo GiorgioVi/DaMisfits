@@ -44,6 +44,8 @@ def create_account(username, password, fullname, account):
         print "Create Account Successful"
         return True
     print "Create Account Failed"
+    db.commit()
+    db.close()
     return False
 
 # Checks if username exists - Returns true if username exists, false otherwise
@@ -73,6 +75,8 @@ def get_account(username):
             db.close()
             return account[0]
     print "Username does not exist"
+    db.commit()
+    db.close()
     return False
 
 # Returns full name of a specific user - else returns False if failed
@@ -86,6 +90,8 @@ def get_name(username):
             db.close()
             return account[0]
     print "Username does not exist"
+    db.commit()
+    db.close()
     return False
 
 # Returns class type of a specific course - else Returns False if failed
@@ -100,13 +106,15 @@ def get_classtype(coursecode):
             db.close()
             return course[0]
     print "Course does not exist"
+    db.commit()
+    db.close()
     return False
 
 # Returns a list of leaders of a specific course - else Returns False if failed
 def get_leaders(coursecode):
     db = sqlite3.connect(m)
     c = db.cursor()
-    if not does_course_exist(coursecode):
+    if does_course_exist(coursecode):
         c.execute("SELECT leader FROM leaders WHERE coursecode = '%s';" % (coursecode))
         leaders = []
         for course in c:
@@ -116,6 +124,8 @@ def get_leaders(coursecode):
         db.close()
         return leaders
     print "Course does not exist"
+    db.commit()
+    db.close()
     return False
 
 # Returns a list of students enrolled in a specific course - else Returns False if failed
@@ -132,6 +142,8 @@ def get_students(coursecode):
         db.close()
         return students
     print "Course does not exist"
+    db.commit()
+    db.close()
     return False
 
 # Authorizes student into the class
@@ -170,7 +182,8 @@ def add_attendance(username, course, day, type, reason):
         db.commit()
         db.close()
         return True
-
+    db.commit()
+    db.close()
     print "Attendance didn't work"
     return False
 
@@ -202,16 +215,24 @@ def create_class(teacher, coursecode, password):
         print "Create Course Successful"
         return True
     print "Create Course Failed"
+    db.commit()
+    db.close()
     return False
 
 # Gets all the available classes
-def get_classes():
+def get_classes(username):
     db = sqlite3.connect(m)
     c = db.cursor()
-    c.execute("SELECT coursecode FROM classes;")
-    classes = []
-    for course in c:
-        classes.append(course[0])
+    if get_account(username) == 'T':
+        c.execute("SELECT coursecode FROM classes WHERE teacher='%s';" %(username))
+        classes = []
+        for course in c:
+            classes.append(course[0])
+    if get_account(username) == 'L':
+        c.execute("SELECT coursecode FROM leaders WHERE leader='%s';" %(username))
+        classes = []
+        for course in c:
+            classes.append(course[0])
     print "Classes Returned: " + str(classes)
     db.commit()
     db.close()
@@ -230,6 +251,8 @@ def add_leader(coursecode, username):
         print "Add Leader Successful"
         return True
     print "add Leader Failed"
+    db.commit()
+    db.close()
     return False
 
 # Removes leader from the class - Returns true if successful or false if not
@@ -244,6 +267,8 @@ def remove_leader(coursecode, username):
         print "Deleted Leader Successful"
         return True
     print "Deleted Leader Failed"
+    db.commit()
+    db.close()
     return False
 
 # Adds student to the class - Returns true if successful or false if not
@@ -259,6 +284,8 @@ def add_student(coursecode, username, fullname):
         print "Add Student Successful"
         return True
     print "Add Student Failed"
+    db.commit()
+    db.close()
     return False
 
 # Removes student from the class - Returns true if successful or false if not
@@ -273,6 +300,8 @@ def remove_student(coursecode, username):
         print "Deleted Student Successful"
         return True
     print "Deleted Student Failed"
+    db.commit()
+    db.close()
     return False
 
 # Get grade for student in class - Returns the value
@@ -286,6 +315,8 @@ def get_grade(coursecode, username):
             db.commit()
             db.close()
             return grade[0]
+    db.commit()
+    db.close()
     return 'not yet inputted'
 
 # Changes grade for student in class - Returns true if successful or false if not
@@ -300,6 +331,8 @@ def change_grade(coursecode, username, grade):
         print "Changed Grade Successful"
         return True
     print "Changed Grade Failed"
+    db.commit()
+    db.close()
     return False
 
 # Counts number of unexcused absences for a student
@@ -311,9 +344,9 @@ def count_unexcused(username):
         c.execute("SELECT type FROM attendance WHERE username = '%s' AND type = 'U';" % (username))
         for grade in c:
             ans += 1
-            print "Unexcused: " + str(ans)
-            db.commit()
-            db.close()
+        print "Unexcused: " + str(ans)
+    db.commit()
+    db.close()
     return ans
 
 # Counts number of excused absences for a student
@@ -325,9 +358,9 @@ def count_excused(username):
         c.execute("SELECT type FROM attendance WHERE username = '%s' AND type = 'E';" % (username))
         for grade in c:
             ans += 1
-            print "Unexcused: " + str(ans)
-            db.commit()
-            db.close()
+        print "Unexcused: " + str(ans)
+    db.commit()
+    db.close()
     return ans
 
 # Gets all the classes that a student is enrolled in
@@ -354,6 +387,8 @@ def student_present(username, date, course):
             print "Absent"
             return False
     print "Present"
+    db.commit()
+    db.close()
     return True
 
 def check_attendance(username, date, course):
@@ -367,6 +402,8 @@ def check_attendance(username, date, course):
             print "Absence recorded"
             return False
     print "No absence recorded"
+    db.commit()
+    db.close()
     return True
 
 def delete_attendance(username, date, course):
@@ -374,10 +411,11 @@ def delete_attendance(username, date, course):
     c = db.cursor()
     if does_course_exist(course) and does_username_exist(username):
         c.execute("DELETE FROM attendance WHERE username='%s' AND day='%s' AND course='%s';" % (username, date, course))
-        for account in c:
-            db.commit()
-            db.close()
-            print "Absence removed"
-            return False
+        db.commit()
+        db.close()
+        print "Absence removed"
+        return False
     print "No absence removed"
+    db.commit()
+    db.close()
     return True

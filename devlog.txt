@@ -85,3 +85,6 @@ jackieX -- 2018-06-13 02:40:56
 
 kevinL -- 2018-06-13 07:59:42
 	last minute html changes
+
+jackieX -- 2018-06-13 10:42:13
+	attendance working

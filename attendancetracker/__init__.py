@@ -143,6 +143,7 @@ def home():
     if request.method == "POST":
         coursecode = request.form['coursecode']
         username = request.form['student'].lower()
+        
         if not db.does_username_exist(username):
             flash(" Username does not exist")
         if username in db.get_leaders(coursecode):
@@ -169,21 +170,19 @@ def attendance():
     if accttype == 'S':
         return redirect(url_for("profile"))
 
-    classes = db.get_classes()
+    classes = db.get_classes(user)
     #coming back from excuse
     if request.method == "POST":
         allppl = len(request.form)
         for each in request.form:
+            print each +': '+ request.form[each]
             if each.endswith('@stuy.edu') and request.form[each] == 'A':
-                print "absent"
-                if db.check_attendance(each, att_course, att_date):
-                    print "absent 1"
+                if db.check_attendance(each, att_date, att_course):
                     db.add_attendance(each, att_course, att_date, 'U', '')
             if each.endswith('@stuy.edu') and request.form[each] == 'P':
-                print "present"
-                if not db.check_attendance(each, att_course, att_date):
-                    print "removing attendance"
-                    db.delete_attendance(each, att_course, att_date)
+                if not db.check_attendance(each, att_date, att_course):
+                    db.delete_attendance(each, att_date, att_course)
+        flash('Updated attendance for ' + att_course)
 
     #search
     if request.method == "GET" and 'date' in request.args:
@@ -212,7 +211,7 @@ def excuse():
     if accttype == 'S':
         return redirect(url_for("profile"))
 
-    classes = db.get_classes()
+    classes = db.get_classes(user)
     if request.method == "POST":
         date = request.form["date"]
         reason = request.form["reason"]
@@ -220,7 +219,7 @@ def excuse():
             flash('Excused absence for ' + stu_name)
             db.add_attendance(stu_name, stu_course, date, 'E', reason)
         else:
-            flash('There is nothing to excuse on ' + date + ' for ' + stu_name)
+            flash(stu_name + ' was present on '+date+ ' in '+stu_course)
     if request.method == "GET" and 'course' in request.args:
         stu_course = request.args.get("course")
         students = db.get_students(stu_course)
@@ -276,7 +275,7 @@ def student():
     if accttype == 'L':
         return redirect(url_for("attendance"))
 
-    classes = db.get_classes()
+    classes = db.get_classes(user)
     if request.method == "POST":
         grade = request.form["grade"]
         db.change_grade(stu_course, stu_name, int(grade))
