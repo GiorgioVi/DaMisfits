@@ -165,7 +165,7 @@ def add_attendance(username, course, day, type, reason):
         db.close()
         return True
     else:
-        c.execute("INSERT INTO attendance VALUES('%s', '%s', '%s', 'U');" % (username, day, course))
+        c.execute("INSERT INTO attendance VALUES('%s', '%s', '%s', 'U', '');" % (username, day, course))
         print "Attendance added"
         db.commit()
         db.close()
@@ -352,4 +352,30 @@ def student_present(username, date, course):
             print "Absent"
             return False
     print "Present"
+    return True
+
+def check_attendance(username, date, course):
+    db = sqlite3.connect(m)
+    c = db.cursor()
+    if does_course_exist(course) and does_username_exist(username):
+        c.execute("SELECT type FROM attendance WHERE username='%s' AND day='%s' AND course='%s';" % (username, date, course))
+        for account in c:
+            db.commit()
+            db.close()
+            print "Absence recoded"
+            return False
+    print "No absence recorded"
+    return True
+
+def delete_attendance(username, date, course):
+    db = sqlite3.connect(m)
+    c = db.cursor()
+    if does_course_exist(course) and does_username_exist(username):
+        c.execute("DELETE FROM attendance WHERE username='%s' AND day='%s' AND course='%s';" % (username, date, course))
+        for account in c:
+            db.commit()
+            db.close()
+            print "Absence removed"
+            return False
+    print "No absence removed"
     return True

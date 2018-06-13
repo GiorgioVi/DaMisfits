@@ -5,6 +5,8 @@ from datetime import date
 
 
 USER_SESSION = "logged_in"
+att_date = ''
+att_course = ''
 
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
@@ -141,9 +143,8 @@ def home():
 
 @app.route("/attendance", methods=["GET","POST"])
 def attendance():
-
-    date = '' #today = str(date.today())
-    course = ''
+    global att_date
+    global att_course
 
     if not USER_SESSION in session:
         return redirect(url_for("login"))
@@ -156,29 +157,29 @@ def attendance():
     classes = db.get_classes()
     #coming back from excuse
     if request.method == "POST":
-        #today = str(date.today())
-        print 'request.form'
-        print request.form
-        #c.execute("INSERT INTO attendance VALUES('%s', '%s', '%s', 'U', '');" % (username, day, course))
-
-    classes = db.get_classes()
-    #coming back from excuse
-    if request.method == "POST":
         allppl = len(request.form)
         for each in request.form:
             if each.endswith('@stuy.edu') and request.form[each] == 'A':
-                db.add_attendance(each, course, date, 'U', '')
+                print "absent"
+                if not db.check_attendance(each, att_course, att_date):
+                    print "absent 1"
+                    db.add_attendance(each, att_course, att_date, 'U', '')
+            if each.endswith('@stuy.edu') and request.form[each] == 'P':
+                print "present"
+                if db.check_attendance(each, att_course, att_date):
+                    print "removing attendance"
+                    db.delete_attendance(each, att_course, att_date)
 
     #search
     if request.method == "GET" and 'date' in request.args:
-        date = request.args.get("date")
-        course = request.args.get("course")
-        enrolled = db.get_students(course)
+        att_date = request.args.get("date")
+        att_course = request.args.get("course")
+        enrolled = db.get_students(att_course)
         students = {}
         for each in enrolled:
-            students[each] = [db.get_name(each), db.student_present(each, date, course)]
+            students[each] = [db.get_name(each), db.student_present(each, att_date, att_course)]
 
-        return render_template("attendance.html", date=date, students=students, course=course, courses=classes, isLogged=(USER_SESSION in session), searched=True, acct = accttype)
+        return render_template("attendance.html", date=att_date, students=students, course=att_course, courses=classes, isLogged=(USER_SESSION in session), searched=True, acct = accttype)
 
     return render_template("attendance.html", courses=classes, isLogged=(USER_SESSION in session), acct = accttype)
 
@@ -271,6 +272,7 @@ def student():
 if __name__ == "__main__":
     d = sqlite3.connect("data/database.db")
     c = d.cursor()
+    print "saved att"
     c.execute("CREATE TABLE IF NOT EXISTS profiles (username TEXT PRIMARY KEY, password TEXT, fullname TEXT, account TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS attendance (username TEXT, day TEXT, course TEXT, type TEXT, reason TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS classes (teacher TEXT, coursecode TEXT PRIMARY KEY, password TEXT, type TEXT);")
