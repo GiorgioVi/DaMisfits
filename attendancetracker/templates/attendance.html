@@ -7,24 +7,30 @@ Student Profile
 
 <div class="container">
   <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
+    <div class="row">
+    <div class="col-4">
+    <center> <h2> Select a class </h2> </center>
+    <hr>
     <form method = "GET" action ="/attendance">
       Class:
-      <select name="course">
+      <select name="course" class="form-control">
         <option value=""></option>
         {% for each in courses %}
         <option value="{{each}}">{{each}}</option>
         {% endfor %}
       </select> <br>
       Date:
-      <input type="date" name="date" required>
-      <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Submit">
-      <br><br><br>
+      <input type="date" name="date" class="form-control" required>
+      <br>
+      <input class="btn btn-info btn-block" type="submit" name="form" value="Submit">
+      <br><br>
     </form>
+  </div>
 
+<div class="col-8">
     {% if searched %}
     <h2 style="text-align:center;">Attendance for {{course}} on {{date}}</h2>
-    <p class="text-muted"><center>Check to mark present</center></p>
-    <br>
+    <hr>
     <form method="POST" action="/attendance">
       {% for each in students %}
       {{students[each][0]}} ({{each}})
@@ -36,21 +42,16 @@ Student Profile
           <input name="{{each}}" type="radio" value="A" checked>Absent</input><br>
         {% endif %}
       {% endfor %}
-      <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Save">
+      <br>
+      <input class="btn btn-info pull-right" type="submit" name="form" value="Save">
     </form><br>
     {% endif %}
 
-    <form style="text-align: center;" method="get" action="/">
-      <button class="btn btn-default" type="submit" style="background-color: lightblue;" value="Back To Home Page" >Back To Home Page </button>
-    </form>
-
 </center>
-
-
+</div>
+</div>
   </div>
 </div>
 
   <br><br>
-<div class="row">
-</div>
 {% endblock %}

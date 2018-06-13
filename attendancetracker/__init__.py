@@ -123,6 +123,7 @@ def profile():
 
     enrolled = {}
     for each in db.get_studentclass(user):
+        print db.get_grade(each, user)
         enrolled[each] = db.get_grade(each, user)
 
     return render_template("profile.html", attendance=info, enrolled=enrolled, username=user, isLogged = (USER_SESSION in session), fullname = db.get_name(user), acct = accttype)
@@ -184,7 +185,7 @@ def attendance():
                 if not db.check_attendance(each, att_course, att_date):
                     print "removing attendance"
                     db.delete_attendance(each, att_course, att_date)
-
+        flash("Attendance saved!")
     #search
     if request.method == "GET" and 'date' in request.args:
         att_date = request.args.get("date")

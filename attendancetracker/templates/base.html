@@ -10,12 +10,13 @@
   <!-- flash messages !-->
   {% set messages = get_flashed_messages() %}
   {% for message in messages %}
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
+
+  <div class="alert alert-info alert-dismissible fade show" role="alert">
+  {{message}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
   </div>
-  <h3 style="text-align:center;color:red;" class="text-muted" > {{message}} </h3>
   {% endfor %}
 
     </head>

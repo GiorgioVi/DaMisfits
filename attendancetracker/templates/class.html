@@ -3,29 +3,26 @@
   {% block title %}
   Create Class
   {% endblock %}
-
 {% block body %}
 <div class="container">
   <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
-    <H2 style="text-align:center;">Create a Class</h2> <br><br>
-  	<form style="text-align:center;"method = "POST" action ="/class">
-            Course Code: <br>
-            <input type="text" name="newCode" placeholder="Course code" required> <br><br>
-            Course Password: <br>
-            <input type = "password" name = "newPassword" placeholder="Password" required>  <br><br>
-              Confirm Password: <br>
-            <input type="password" name = "repeatPassword" placeholder="Confirm password" required> <br> <br>
-            Type of Class: <br>
-            <input type="radio" class="form-control" name="accttype" value="B">Band
-            <input type="radio" class="form-control" name="accttype" value="C">Chorus<br>
-            <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Submit">
+    <H2 style="text-align:center;">Create a Class</h2>
+      <hr>
+  	<form method = "POST" action ="/class">
+            Course Code:
+            <input class="form-control"type="text" name="newCode" placeholder="Course code" required> <br>
+            Course Password:
+            <input class="form-control"type = "password" name = "newPassword" placeholder="Password" required>  <br>
+              Confirm Password:
+            <input class="form-control"type="password" name = "repeatPassword" placeholder="Confirm password" required> <br>
+
+            <input class="btn btn-info btn-block" type="submit" name="form" value="Submit">
   	</form>
 	<br>
   	 <form style="text-align: center;" method="get" action="/">
-          <button class="btn btn-default" type="submit" style="background-color: lightblue;" value="Back To Home Page" >Back To Home Page </button>
+          <button class="btn btn-default btn-success" type="submit" value="Back To Home Page" >Back To Home Page </button>
         </form>
 
-</center>
 
 
   </div>

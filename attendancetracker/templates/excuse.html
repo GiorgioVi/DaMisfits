@@ -6,47 +6,56 @@ Profile
 {% block body %}
 <div class="container">
   <div class="jumbotron" rel="stylesheet"style="background-color: white; ">
-
-    <form method = "GET" action ="/excuse">
+    <div class="row">
+    <div class="col-4">
+      <center> <h2> Select a class, </h2> </center>
+      <hr>
+      <form method = "GET" action ="/excuse">
       Class:
-      <select name="course" required>
+      <select name="course" class="form-control" required>
         <option value=""></option>
         {% for each in courses %}
           <option value="{{each}}">{{each}}</option>
         {% endfor %}
       </select>
-      <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Submit"><br>
+      <br>
+      <input class="btn btn-info btn-block" type="submit" name="form" value="Submit"><br>
     </form>
+    <center> <h2> then a student: </h2> </center>
+    <hr>
     <form method = "GET" action ="/excuse">
       Student:
-      <select name='student' required>
+      <select name='student' class="form-control" required>
         {% for each in students %}
         <option value="{{each}}">{{each}}</option>
         {% endfor %}
       </select>
-      <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Submit">
+      <br>
+      <input class="btn btn-info btn-block" type="submit" name="form" value="Submit">
       <br><br>
     </form>
-
+  </div>
+  <div class="col-8">
     {% if searched %}
-    <h1><center>Excuse Absence for {{name}}</center></h1>
+    <h2><center>Excuse Absence for {{name}}</center></h2>
+    <hr>
     <p class="text-muted text-center">{{username}}</p>
 
-    <center>
       <form method = "POST" action ="/excuse">
         Date: <br>
-        <input type="date" name="date" required><br><br>
-        Reason: <br>
-        <input type="text" name="reason" required><br><br>
-        <input style="background-color: lightblue;" class="btn btn-info btn-block" type="submit" name="form" value="Submit">
+        <input class="form-control" type="date" name="date" required><br><br>
+
+        <div class="form-group">
+          <label>Reason:</label>
+          <input type="text" class="form-control" placeholder="Provide an explanation" name="reason" required>
+        </div>
+
+        <input class="btn btn-info btn-block" type="submit" name="form" value="Submit">
         <br><br>
       </form>
-    </center>
     {% endif %}
-
-    <form style="text-align: center;" method="get" action="/attendance">
-      <button class="btn btn-default" type="submit" style="background-color: lightblue;" value="Back To Home Page" >Back To Attendance </button>
-    </form>
+  </div>
+</div>
 
   </div>
 </div>
