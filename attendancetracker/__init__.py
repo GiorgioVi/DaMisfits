@@ -7,6 +7,8 @@ from datetime import date
 USER_SESSION = "logged_in"
 att_date = ''
 att_course = ''
+stu_course = ''
+stu_name = ''
 
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
@@ -19,7 +21,7 @@ def add_session(username, password):
         flash("Username or password is blank")
         return False
     if(db.login(username.lower(), password)):#if credentials match up in the db...
-        session[USER_SESSION] = username
+        session[USER_SESSION] = username.lower()
         return True
     else:
         flash("Incorrect login credentials")
@@ -123,7 +125,7 @@ def profile():
     for each in db.get_studentclass(user):
         enrolled[each] = db.get_grade(each, user)
 
-    return render_template("profile.html", attendance=info, enrolled=enrolled, username=user, isLogged = (USER_SESSION in session), acct = accttype)
+    return render_template("profile.html", attendance=info, enrolled=enrolled, username=user, isLogged = (USER_SESSION in session), fullname = db.get_name(user), acct = accttype)
 
 
 @app.route("/home", methods=["GET","POST"])
@@ -140,7 +142,7 @@ def home():
 
     if request.method == "POST":
         coursecode = request.form['coursecode']
-        username = request.form['student']
+        username = request.form['student'].lower()
         if not db.does_username_exist(username):
             flash(" Username does not exist")
         if username in db.get_leaders(coursecode):
@@ -199,6 +201,9 @@ def attendance():
 
 @app.route("/excuse", methods=["GET","POST"])
 def excuse():
+    global stu_course
+    global stu_name
+
     if not USER_SESSION in session:
         return redirect(url_for("login"))
 
@@ -211,16 +216,19 @@ def excuse():
     if request.method == "POST":
         date = request.form["date"]
         reason = request.form["reason"]
-        person = request.form["name"]
-        course = request.args.get("course")
-        db.add_attendance(person, date, course, 'E', reason)
-    if request.method == "GET" and 'course' in request.args:
-        course = request.args.get("course")
-        if not 'student' in request.args:
-            students = db.get_students(course)
-            return render_template("excuse.html", students=students, course=course, courses=classes, isLogged=(USER_SESSION in session), acct = accttype)
+        if db.check_attendance(stu_name, date, stu_course):
+            flash('Excused absence for ' + stu_name)
+            db.add_attendance(stu_name, date, stu_course, 'E', reason)
         else:
-            return render_template("excuse.html", course=course, courses=classes, isLogged=(USER_SESSION in session), searched=True, acct = accttype)
+            flash('There is nothing to excuse on ' + date + ' for ' + stu_name)
+    if request.method == "GET" and 'course' in request.args:
+        stu_course = request.args.get("course")
+        students = db.get_students(stu_course)
+        return render_template("excuse.html", students=students, course=stu_course, courses=classes, isLogged=(USER_SESSION in session), acct = accttype)
+    if request.method == "GET" and 'student' in request.args:
+        print 'yes'
+        stu_name = request.args.get('student')
+        return render_template("excuse.html", name=db.get_name(stu_name), username=stu_name, course=stu_course, courses=classes, isLogged=(USER_SESSION in session), searched=True, acct = accttype)
 
     return render_template("excuse.html", courses=classes, isLogged = (USER_SESSION in session), acct = accttype)
 
@@ -268,18 +276,17 @@ def student():
     classes = db.get_classes()
     if request.method == "POST":
         grade = request.form["grade"]
-        person = request.form["name"]
-        course = request.args.get("course")
-        db.add_grade(course, person, grade)
+        db.add_grade(stu_course, stu_student, grade)
     if request.method == "GET" and 'course' in request.args:
-        course = request.args.get("course")
-        if not 'student' in request.args:
-            students = db.get_students(course)
-            return render_template("student.html", students=students, course=course, courses=classes, isLogged=(USER_SESSION in session), acct = accttype)
-        else:
-            return render_template("student.html", course=course, courses=classes, isLogged=(USER_SESSION in session), searched=True, acct = accttype)
+        stu_course = request.args.get("course")
+        students = db.get_students(stu_course)
+        return render_template("student.html", students=students, course=stu_course, courses=classes, isLogged=(USER_SESSION in session), acct = accttype)
+    if request.method == "GET" and 'student' in request.args:
+        print 'yes'
+        stu_name = request.args.get('student')
+        return render_template("student.html", name=db.get_name(stu_name), user=stu_name, course=stu_course, courses=classes, isLogged=(USER_SESSION in session), searched=True, acct = accttype)
 
-    return render_template("student.html", name="Kevin Li", user="kli16@stuy.edu", grade="99", isLogged = (USER_SESSION in session), acct = accttype)
+    return render_template("student.html", isLogged = (USER_SESSION in session), acct = accttype)
 
 
 if __name__ == "__main__":
