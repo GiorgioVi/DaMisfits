@@ -191,12 +191,12 @@ def does_course_exist(coursecode):
     return False
 
 # Creates class if class does not exist - Returns true if successful or false if not
-def create_class(teacher, coursecode, password, type):
+def create_class(teacher, coursecode, password):
     db = sqlite3.connect(m)
     c = db.cursor()
     if not does_course_exist(coursecode):
         # Add course to classes table
-        c.execute("INSERT INTO classes VALUES('%s', '%s', '%s', '%s');" % (teacher, coursecode, encrypt_password(password), type))
+        c.execute("INSERT INTO classes VALUES('%s', '%s', '%s');" % (teacher, coursecode, encrypt_password(password)))
         db.commit()
         db.close()
         print "Create Course Successful"

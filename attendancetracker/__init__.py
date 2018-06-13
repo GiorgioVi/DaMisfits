@@ -84,11 +84,10 @@ def create():
             flash("A field was left empty")
         elif password != confirm_password:
             flash("Password and password confirmation do not match")
-        elif accttype == 'T':
-            if admin_password == "":
-                flash("To create a teacher account, please enter admin password")
-            elif admin_password and db.encrypt_password(admin_password) != 'ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb':
-                flash("Admin password is incorrect")
+        elif accttype == 'T' and admin_password == "":
+            flash("To create a teacher account, please enter admin password")
+        elif accttype == 'T' and admin_password and db.encrypt_password(admin_password) != 'ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb':
+            flash("Admin password is incorrect")
         elif not db.create_account(username, password, fullname, accttype):
             flash("Username taken")
         else:
@@ -248,16 +247,17 @@ def classes():
         code = request.form["newCode"]
         password = request.form["newPassword"]
         confirm_password = request.form["repeatPassword"]
-        classtype = request.form["accttype"]
+
         if '-' not in code:
             flash("Code must include section")
-        elif is_null(code, classtype, password, confirm_password):
+        elif is_null(code, "placeholder", password, confirm_password):
             flash("A field was left empty")
         elif password != confirm_password:
             flash("Password and password confirmation do not match")
-        elif not db.create_class(user, code, password, classtype):
+        elif not db.create_class(user, code, password):
             flash("Course code taken")
-        flash("Course Created!")
+        else:
+            flash("Course Created!")
 
     return render_template("class.html", isLogged = (USER_SESSION in session), acct = accttype)
 
