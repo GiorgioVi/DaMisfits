@@ -376,6 +376,7 @@ def get_studentclass(username):
     db.close()
     return classes
 
+# Checks if student was present on a given day for a given course - Returns true if absent, false if not
 def student_present(username, date, course):
     db = sqlite3.connect(m)
     c = db.cursor()
@@ -391,6 +392,7 @@ def student_present(username, date, course):
     db.close()
     return True
 
+# Checks if student was absent on a given day for a given course - Returns true if absent, false if not
 def check_attendance(username, date, course):
     db = sqlite3.connect(m)
     c = db.cursor()
@@ -406,6 +408,7 @@ def check_attendance(username, date, course):
     db.close()
     return True
 
+# Removes attendance for those marked present - Returns true if removed, false if not
 def delete_attendance(username, date, course):
     db = sqlite3.connect(m)
     c = db.cursor()
