@@ -121,7 +121,7 @@ def profile():
     for each in db.get_studentclass(user):
         enrolled[each] = db.get_grade(each, user)
 
-    return render_template("profile.html", attendance=info, enrolled=enrolled, username=user, fullname=fullname, isLogged = (USER_SESSION in session), acct = accttype)
+    return render_template("profile.html", attendance=info, enrolled=enrolled, username=user, isLogged = (USER_SESSION in session), acct = accttype)
 
 
 @app.route("/home", methods=["GET","POST"])
@@ -141,6 +141,10 @@ def home():
 
 @app.route("/attendance", methods=["GET","POST"])
 def attendance():
+
+    date = '' #today = str(date.today())
+    course = ''
+
     if not USER_SESSION in session:
         return redirect(url_for("login"))
 
@@ -155,6 +159,15 @@ def attendance():
         #today = str(date.today())
         print 'request.form'
         print request.form
+        #c.execute("INSERT INTO attendance VALUES('%s', '%s', '%s', 'U', '');" % (username, day, course))
+
+    classes = db.get_classes()
+    #coming back from excuse
+    if request.method == "POST":
+        allppl = len(request.form)
+        for each in request.form:
+            if each.endswith('@stuy.edu') and request.form[each] == 'A':
+                db.add_attendance(each, course, date, 'U', '')
 
     #search
     if request.method == "GET" and 'date' in request.args:
