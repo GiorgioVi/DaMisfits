@@ -73,3 +73,9 @@ jackieX -- 2018-06-08 19:00:10
 
 kevinL -- 2018-06-09 16:18:06
 	Fixed create acc error and the html for forms
+
+jackieX -- 2018-06-13 01:11:19
+	saves attendance
+
+jackieX -- 2018-06-13 01:31:53
+	working add leader
