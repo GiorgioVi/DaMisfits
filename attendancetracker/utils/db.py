@@ -118,7 +118,7 @@ def get_leaders(coursecode):
         c.execute("SELECT leader FROM leaders WHERE coursecode = '%s';" % (coursecode))
         leaders = []
         for course in c:
-            leaders.append(course)
+            leaders.append(course[0])
         print "Leaders Returned: " + str(leaders)
         db.commit()
         db.close()

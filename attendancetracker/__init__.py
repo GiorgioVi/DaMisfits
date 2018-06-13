@@ -143,12 +143,14 @@ def home():
     if request.method == "POST":
         coursecode = request.form['coursecode']
         username = request.form['student'].lower()
-        
-        if not db.does_username_exist(username):
-            flash(" Username does not exist")
-        if username in db.get_leaders(coursecode):
-            flask(username + " is already a leader for this class")
-        if not username in db.get_students(coursecode):
+
+        if not coursecode in db.get_classes(user):
+            flash("Invalid coursecode")
+        elif not db.does_username_exist(username):
+            flash("Username does not exist")
+        elif username in db.get_leaders(coursecode):
+            flash(username + " is already a leader for this class")
+        elif not username in db.get_students(coursecode):
             flash(username + " is not yet enrolled in the class")
         else:
             db.add_leader(coursecode, username)
