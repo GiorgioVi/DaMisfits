@@ -2,6 +2,9 @@
 
 Deployment Deliverable: http://206.189.237.168/
 
+
+### YOUTUBE VIDEO: https://www.youtube.com/watch?v=dGT18PStWoA&feature=youtu.be
+
 ### Accounts:
 
 #### Teacher Names (username, password)
